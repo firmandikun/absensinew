@@ -16,7 +16,9 @@ echo'
                     <div class="col-12 align-self-center mb-4 mt-4">
                         <div class="row justify-content-center">
                             <div class="col-11 col-sm-7 col-md-6 col-lg-5 col-xl-4">
-                                <h6 class="mb-5 mt-3 text-center">Masuk ke akun Anda</h6>
+                                <div class="text-center mb-4">
+                                    <img src="./sw-content/'.$site_logo.'" class="navbar-brand-img" height="40">
+                                <h6 class="mb-5 mt-3 text-center">Aplikasi Absensi UPY</h6>
                                 <div class="form-group float-label">
                                     <input type="email" name="username" class="form-control text-white" required>
                                     <label class="form-control-label email text-white">Email</label>
