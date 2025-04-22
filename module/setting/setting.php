@@ -65,22 +65,6 @@ echo'
                                 </div>
                             </a>
 
-                           
-
-                            <a href="recognition" class="list-group-item list-group-item-action border-color">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-50 bg-default-light text-default rounded">
-                                            <span class="material-icons">face_5</span>
-                                        </div>
-                                    </div>
-                                    <div class="col align-self-center pl-0">
-                                        <h6 class="mb-1">Daftarkan Wajah</h6>
-                                        <p class="text-secondary">Verifikasi Absen Selfie</p>
-                                    </div>
-                                </div>
-                            </a>
-
                             <a href="keamanan" class="list-group-item list-group-item-action border-color">
                                 <div class="row">
                                     <div class="col-auto">
