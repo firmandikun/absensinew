@@ -32,7 +32,6 @@ echo'
                                         </span>
                                     </div>
                                 </div>  
-                                <p class="text-right"><a href="forgot" class="text-white">Forgot Password?</a></p>
                             </div>
                         </div>
                     </div>

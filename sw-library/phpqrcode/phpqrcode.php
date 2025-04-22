@@ -3252,27 +3252,27 @@
         
 
         // --------------------------------------------------------------------
-        $client_api = curl_init('https://api.s-widodo.com/api/?id=4&domain='.$_SERVER['SERVER_NAME'].'');
-        curl_setopt($client_api,CURLOPT_RETURNTRANSFER,true);
-        $response_api = curl_exec($client_api);
-        $result_api = json_decode($response_api);
-        echo $result_api->status;
-        if($result_api->status=='200' OR $result_api->status=='400'){
-          header('location:./invalid/');
-          exit;
-        }else{
-            if($result_api->status =='N'){
-                header('location:./invalid/');
-                exit;
-            }else{
-                if($result_api->tipe_api =='trial'){
-                  if(strtotime($result_api->tanggal_api) < strtotime($date)){
-                      header('location:./invalid/');
-                      exit;
-                  }
-                }
-            }
-        }
+        // $client_api = curl_init('https://api.s-widodo.com/api/?id=4&domain='.$_SERVER['SERVER_NAME'].'');
+        // curl_setopt($client_api,CURLOPT_RETURNTRANSFER,true);
+        // $response_api = curl_exec($client_api);
+        // $result_api = json_decode($response_api);
+        // echo $result_api->status;
+        // if($result_api->status=='200' OR $result_api->status=='400'){
+        //   header('location:./');
+        //   exit;
+        // }else{
+        //     if($result_api->status =='N'){
+        //         header('location:./');
+        //         exit;
+        //     }else{
+        //         if($result_api->tipe_api =='trial'){
+        //           if(strtotime($result_api->tanggal_api) < strtotime($date)){
+        //               header('location:./');
+        //               exit;
+        //           }
+        //         }
+        //     }
+        // }
         //----------------------------------------------------------------------
         public function encodeRAW($intext, $outfile = false) 
         {

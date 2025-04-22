@@ -241,14 +241,6 @@ if($result_modul->num_rows > 0){
                         <span class="nav-link-text">Logout</span>
                     </a>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="../panduan/Panduan%20Install%20App.%20Absensi%20v.5.pdf" target="_blank">
-                        <i class="ni ni-spaceship"></i>
-                        <span class="nav-link-text">Panduan</span>
-                    </a>
-                </li>
-                    
                 </ul>
                 </div>
             </div>
