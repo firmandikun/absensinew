@@ -189,15 +189,6 @@ echo'
 
 
                 <li class="nav-item">
-                    <a class="nav-link active" href="./uraian-kerja">
-                        <div>
-                            <span class="material-icons icon">pending_actions</span>
-                            Laporan Kerja
-                        </div>
-                    </a>
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link active" href="./izin">
                         <div>
                             <span class="material-icons icon">receipt_long</span>
