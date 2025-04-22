@@ -46,7 +46,6 @@ echo'
               if($data_role['modifikasi']=='Y'){
                 echo'
                 <button type="button" class="btn btn-info btn-import"><i class="fas fa-file-import"></i> Import</button>
-                <button type="button" class="btn btn-warning btn-qrcode"><i class="fas fa-qrcode"></i> Qrcode</button>
                 <a href="'.$mod.'&op=add"  class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</a>';
                 }else{
                 echo'
@@ -63,7 +62,6 @@ echo'
                 <thead class="thead-light">
                   <tr>
                     <th width="8">No</th>
-                    <th class="text-center" width="8">QR Code</th>
                     <th>NIP</th>
                     <th>Nama</th>
                     <th>Email</th>

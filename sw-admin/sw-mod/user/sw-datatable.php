@@ -185,11 +185,7 @@ else{
         for ($i=1 ; $i<count($aColumns) ; $i++){
             
             $row[] = '<div class="text-center">'.$no.'</div>';
-            $row[] = '<div class="text-center">
-                            <a class="open-popup-link" href="../sw-content/qrcode/'.strip_tags(seo_title($aRow['qrcode'])).'.jpg" title="'.strip_tags($aRow['nama_lengkap']).' - '.strip_tags($aRow['qrcode']).'">
-                            <img src="../sw-content/qrcode/'.strip_tags(seo_title($aRow['qrcode'])).'.jpg" class="imaged w100 rounded" height="50">
-                            </a>
-                        </div>';
+        
             $row[] = ''.strip_tags($aRow['nip']).'<br>'.$status.'';
             $row[] = '<b>'.strip_tags($aRow['nama_lengkap']).'</b>';
             $row[] = strip_tags($aRow['email']);
