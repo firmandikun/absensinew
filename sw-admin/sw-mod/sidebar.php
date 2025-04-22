@@ -41,12 +41,6 @@ if($result_modul->num_rows > 0){
                 <div class="collapse navbar-collapse" id="sidenav-collapse-main">
                 <!-- Nav items -->
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./home">
-                        <i class="ni ni-shop text-primary"></i>
-                            <span class="nav-link-text">Dashboard</span>
-                        </a>
-                    </li>
 
                     <li class="nav-item">
                       

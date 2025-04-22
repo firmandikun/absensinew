@@ -164,14 +164,14 @@ else{
 
             
             $row[] = '<div class="text-center">'.$no.'</div>';
-            $row[] = '<div class="text-center">
-                        <a class="open-popup-link" href="../sw-content/lokasi/'.strip_tags(seo_title($aRow['lokasi_qrcode'])).'.jpg" title="'.strip_tags($aRow['lokasi_nama']).'">
-                        <img src="../sw-content/lokasi/'.strip_tags(seo_title($aRow['lokasi_qrcode'])).'.jpg" class="imaged w100 rounded" height="50">
-                        </a>
-                    </div>';
+            // $row[] = '<div class="text-center">
+            //             <a class="open-popup-link" href="../sw-content/lokasi/'.strip_tags(seo_title($aRow['lokasi_qrcode'])).'.jpg" title="'.strip_tags($aRow['lokasi_nama']).'">
+            //             <img src="../sw-content/lokasi/'.strip_tags(seo_title($aRow['lokasi_qrcode'])).'.jpg" class="imaged w100 rounded" height="50">
+            //             </a>
+            //         </div>';
             $row[] = strip_tags($aRow['lokasi_nama']);
             $row[] = strip_tags($aRow['lokasi_radius']);
-            $row[] = '<a href="../scan-lokasi/?lokasi='.epm_encode($aRow['lokasi_id']).'" class="btn btn-sm  btn-info" target="_blank">Buka Absen</a>';
+            // $row[] = '<a href="../scan-lokasi/?lokasi='.epm_encode($aRow['lokasi_id']).'" class="btn btn-sm  btn-info" target="_blank">Buka Absen</a>';
             $row[] = '<div class="text-center">'.$status.'</div>';
             $row[] = '<div class="text-center">'.$btn_update.''.$btn_hapus.'</div>';
         }

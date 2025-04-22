@@ -59,10 +59,8 @@ echo'
                 <thead class="thead-light">
                   <tr>
                     <th width="5">No</th>
-                    <th class="text-center">Qr Code</th>
                     <th>Lokasi</th>
                     <th>Radius</th>
-                    <th>Tampilkan Layar</th>
                     <th class="text-center">Aktif</th> 
                     <th class="text-center">Aksi</th>
                   </tr>
