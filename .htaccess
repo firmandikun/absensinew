@@ -1,0 +1,39 @@
+RewriteEngine On
+RewriteRule ^.well-known(.*)$ - [L,NC]
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+Options -Indexes
+
+RewriteRule ^404?$ 404.php [L]
+RewriteRule ^logout?$ module/oauth/logout.php
+
+#---------------- Page ----------------------------
+RewriteRule ^oauth/google?$ google/index.php [L]
+RewriteRule ^export/export?$ export/export.php [L]
+RewriteRule ^oauth/google?$ action/sw-google.php [L]
+RewriteRule ^scan-absen/?$ scan-absen/index.php [L]
+RewriteRule ^scan-lokasi/?$ scan-lokasi/index.php [L]
+RewriteRule ^absen-screen/?$ absen-screen/index.php [L]
+RewriteRule ^invalid/?$ invalid/index.php [L]
+
+
+# --------- Print PDF -----------
+RewriteRule ^print-absensi?$ module/histori-absen/print.php [L]
+RewriteRule ^print-izin?$ module/izin/print.php [L]
+RewriteRule ^print-cuti?$ module/cuti/print.php [L]
+RewriteRule ^print-overtime?$ module/overtime/print.php [L]
+RewriteRule ^print-uraian-kerja?$ module/uraian-kerja/print.php [L]
+RewriteRule ^print-overtime?$ module/overtime/print.php [L]
+RewriteRule ^print-kartu-nama?$ module/kartu-nama/print.php [L]
+RewriteRule ^print-kunjungan?$ module/kunjungan/print.php [L]
+
+# ----------- Blog Details ----------------------
+RewriteRule ^blog-([^/]*)?$ index.php?mod=blog-details&details=$1 [L]
+
+
+# ----------- Index + halaman ---------------
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)?$ index.php?mod=$1 [L]

@@ -1,0 +1,201 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(-45deg,#0593ff,#01004c, #00ffc8);
+    background-size: 400%;
+    animation: slide 30s ease infinite;
+  }
+
+  @keyframes slide {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+h1{
+    font-size:25px;
+}
+
+h3{
+    font-size: 18px;
+}
+
+.wrapper{
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    overflow: hidden;
+    width:100%;
+}
+
+.logo{
+    position: relative;
+    text-align: center;
+    margin:10px 0px 10px;
+    display: none;
+}
+
+.logo img{
+   max-height:80px;
+   width:auto;
+}
+
+.card{
+    background-color: rgba(255, 255, 255, 0.13);
+    color:#ffffff!important;
+}
+
+.screen-slider{
+    position:relative;
+    height:230px;
+    border-radius:10px;
+    overflow: hidden;
+    margin-bottom:30px;
+    text-align:center;
+    overflow: hidden;
+}
+
+.screen-slider img{
+    height:230px;
+    width:100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+
+.clock{
+    font-size:50px;
+    height:70px;
+    color:#ffffff!important;
+
+}
+
+.kalender{
+    font-size:30px;
+    text-transform: uppercase;
+    color:#ffffff!important;
+
+}
+
+.qrcode{
+    padding: 20px 30px!important;
+    height:50px!important;
+    font-size:20px!important;
+    border-radius:30px!important;
+    border:0px!important;
+}
+
+.qrcode:active,
+.qrcode:focus{
+    border:0px!important;
+}
+
+.qrcode::-ms-input-placeholder {
+    color: #ffffff!important;
+}
+
+::placeholder {
+    color: #ffffff!important;
+}
+
+.table-kelas {
+    position: relative;
+    overflow: hidden;
+}
+
+
+.data-absensi-kelas hr{
+    margin-top:5px;
+    margin-bottom:5px;
+    border: 0;
+    height: 0px;
+    border-top: 1px solid #ffffff;
+}
+
+.table-kelas hr{
+    border: 0;
+    height: 0px;
+    border-top: 0px;
+}
+
+.marquee {
+    top: 1em;
+    position: relative;
+    box-sizing: border-box;  
+    animation: marquee 10s linear 0s infinite;
+}
+
+.marquee:hover {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(0, -100%);
+    }
+}
+
+
+img.avatar-absen{
+    height: 200px;
+    width: auto;
+    object-fit: cover;
+    border-radius:20px;
+}
+
+h1.nama-siswa{
+    font-size: 25px;
+}
+
+@media all and (display-mode: fullscreen) {
+    .logo{
+        position: relative;
+        text-align: center;
+        margin:0px 0px 10px;
+        display: block;
+    }
+    
+    .logo img{
+       max-height:80px;
+       width:auto;
+    }
+
+    .screen-slider{
+        height:270px;
+    }
+
+    .screen-slider img{
+        height:270px;
+    }
+    
+    .clock{
+        font-size:60px;
+        height:70px;
+    }
+
+    .card-body-2{
+        height:633px;
+    }
+
+    .imaged.w160 {
+        width: 200px !important;
+    }
+
+    .card-body-3{
+        height:455px;
+    }
+
+}
