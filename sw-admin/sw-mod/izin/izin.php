@@ -46,13 +46,19 @@ echo'
               if($data_role['modifikasi']=='Y'){
                 echo'
                 <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Tambah</button>';
+                echo'<button class="btn btn-primary btn-create-lainlain"><i class="fas fa-plus"></i> Tambah Data Lain-lain</button>';
+
+                
               }else{
                 echo'
                 <button class="btn btn-primary" disabled><i class="fas fa-plus"></i> Tambah</button>';
+                echo'<button class="btn btn-primary" disabled><i class="fas fa-plus"></i> Tambah Data Lain-lain</button>';
               }
               echo'
               </div>
             </div>';
+
+            
 
            
         echo'
@@ -88,6 +94,39 @@ echo'
 
       if($data_role['modifikasi']=='Y'){
       echo'
+<div class="modal fade modal-create-lainlain" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="form-create-lainlain" action="proses_tambah_lainlain.php" method="POST" autocomplete="off">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCreateLainlainTitle">Tambah Data Lain-lain</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="nama">Nama <span class="text-danger">*</span></label>
+            <input type="text" name="nama" class="form-control" id="nama" placeholder="Masukkan nama" required>
+          </div>
+
+          <div class="form-group">
+            <label for="tipe">Tipe <span class="text-danger">*</span></label>
+            <input type="text" name="tipe" class="form-control" id="tipe" placeholder="Masukkan tipe (contoh: izin, cuti, sakit)" required>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+      
 
       <!-- Modal Add -->
       <div  class="modal fade modal-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

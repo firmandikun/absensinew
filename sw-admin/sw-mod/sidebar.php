@@ -139,6 +139,14 @@ if($result_modul->num_rows > 0){
 
                         <div class="collapse" id="izin">
                             <ul class="nav nav-sm flex-column">';
+                              foreach ($data['data_role'] as $row) {
+                                    if ($row['modul_id'] == 16) {
+                                        echo '
+                                        <li class="nav-item">
+                                            <a href="./type-izin" class="nav-link">Type Izin Dan Cuti</a>
+                                        </li>';
+                                    }
+                                }
                             foreach ($data['data_role'] as $row) {
                                 if($row['modul_id']==8){
                                 echo'
@@ -156,6 +164,7 @@ if($result_modul->num_rows > 0){
                                 }
                             }
                             echo'
+                            
                             </ul>
                         </div>
                     </li>';

@@ -64,15 +64,27 @@ function loadData(){
                 "url": "./sw-mod/user/sw-datatable.php",
                 "type": "POST",
                 "data": {
-                    modifikasi:modifikasi,
-                    hapus:hapus,
-                 }, 
+                    modifikasi: modifikasi,
+                    hapus: hapus,
+                },
             },
- 
-            "columnDefs": [{ 
-                "targets": [ 0 ], 
-                "orderable": false, 
-            },],
+            "columns": [
+                {"data": "no"}, 
+                {"data": "nip"},
+                {"data": "nama_lengkap"},
+                {"data": "email"},
+                {"data": "jenis_kelamin"},
+                {"data": "posisi_nama", "render": function(data, type, row) {
+                    return data ? strip_tags(data) : '-'; 
+                }},
+                {"data": "status"},
+                {"data": "actions"}
+            ],
+            "columnDefs": [
+                {"targets": [0], "orderable": false},
+                {"targets": [5], "className": "text-left"},
+                {"targets": [6,7], "className": "text-center"}
+            ],
         });
     });
 }
@@ -443,5 +455,4 @@ $(document).on('click', '.btn-delete', function(){
         return false;
     }  
 });
-}); 
-    
+});

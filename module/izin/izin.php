@@ -23,21 +23,15 @@ echo'
                                     </div>
                                     <input type="text" class="form-control mulai search datepicker" placeholder="Mulai">
                                 </div>
-
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-group float-label position-relative mb-1">
                                     <div class="bottom-right ">
                                         <span class="btn btn-sm btn-link text-dark btn-40 rounded text-mute"><i class="material-icons">calendar_month</i></span>
                                     </div>
-
                                     <input type="text" class="form-control selesai search datepicker" placeholder="Berakhir">
                                 </div>
-
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -47,7 +41,6 @@ echo'
             <div class="col">
                 <h6 class="subtitle mb-2">Izin</h6>
             </div>
-
             <div class="load-izin postList"></div>
         </div>
     </div>

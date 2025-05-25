@@ -13,6 +13,7 @@ function loading(){
 }
 
 
+
 $('.timepicker').timepicker({
     showInputs: false,
     showMeridian: false,
@@ -174,6 +175,54 @@ $(document).on('click', '.btn-add', function(){
     });
 });
 
+/* -------- MODAL CREATE LAIN-LAIN */
+$(document).on('click', '.btn-create-lainlain', function(){
+    $('.modal-create-lainlain').modal('show');
+    $('.modal-title').html('Tambah Data Lain-lain');
+    $('.form-create-lainlain').trigger('reset');
+    $('.id').val('');
+});
+
+/** Submit Create Lain-lain */
+$('.form-create-lainlain').submit(function (e) {
+    loading();
+    e.preventDefault();
+    $.ajax({
+        url: 'proses_tambah_lainlain.php', // Ganti path sesuai struktur folder kamu
+        type: "POST",
+        data: new FormData(this),
+        processData: false,
+        contentType: false,
+        cache: false,
+        async: false,
+        beforeSend: function () {
+            loading();
+        },
+        success: function (data) {
+            if (data == 'success') {
+                swal({
+                    title: 'Berhasil!',
+                    text: 'Data berhasil disimpan!',
+                    icon: 'success',
+                    timer: 2500,
+                });
+                loadData(); // panggil fungsi untuk reload tabel
+                $(".form-create-lainlain").trigger("reset");
+                $('.modal-create-lainlain').modal('hide');
+            } else {
+                swal({
+                    title: 'Oops!',
+                    text: data,
+                    icon: 'error',
+                });
+            }
+        },
+        complete: function () {
+            $(".loading").hide();
+        },
+    });
+});
+
 
 /**  Update */
 $(document).on('click', '.btn-update', function(){
@@ -283,4 +332,4 @@ $(document).on('click', '.btn-delete', function(){
     }  
 });
 }); 
-    
+

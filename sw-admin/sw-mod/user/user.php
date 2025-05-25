@@ -9,6 +9,11 @@ else{
   if($result_role->num_rows > 0){
     $data_role = $result_role->fetch_assoc();
 
+  $query_user = "SELECT user.*, posisi.posisi_nama FROM user 
+               LEFT JOIN posisi ON user.posisi_id = posisi.posisi_id 
+               ORDER BY user.nama_lengkap ASC";
+  $result_user = $connection->query($query_user);
+
 switch(@$_GET['op']){ 
   default:
 echo'
@@ -66,6 +71,7 @@ echo'
                     <th>Nama</th>
                     <th>Email</th>
                     <th>Jenis Kelamin</th>
+                    <th class="text-center">Posisi/Jabatan</th>
                     <th class="text-center">Status</th> 
                     <th class="text-center">Aksi</th>
                   </tr>

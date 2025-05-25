@@ -85,11 +85,12 @@ else{
         }
     }
 
-    $sQuery = " SELECT SQL_CALC_FOUND_ROWS ".str_replace(" , ", " ", implode(", ", $aColumns))."
-        FROM $sTable
-        $sWhere
-        $sOrder
-        $sLimit ";
+    $sQuery = " SELECT SQL_CALC_FOUND_ROWS user.*, posisi.posisi_nama 
+               FROM $sTable 
+               LEFT JOIN posisi ON user.posisi_id = posisi.posisi_id 
+               $sWhere 
+               $sOrder 
+               $sLimit";
     $rResult = mysqli_query($gaSql['link'], $sQuery);
 
     $sQuery = "SELECT FOUND_ROWS()";
@@ -177,19 +178,18 @@ else{
             <i class="fas fa-trash"></i>
         </a>';
         }else{
-        $btn_hapus ='<a href="javascript:void(0)" class="table-action table-action-delete btn-tooltip btn-error" data-toggle="tooltip" data-placement="right" title="Hapus">
+        $btn_hapus ='<a href="javascript:void(0)" class="table-action table-action-delete btn-tooltip btn-error" data-toggle="tooltip"  data-placement="right" title="Hapus">
          <i class="fas fa-trash"></i>
         </a>';
         }
         
         for ($i=1 ; $i<count($aColumns) ; $i++){
-            
             $row[] = '<div class="text-center">'.$no.'</div>';
-        
             $row[] = ''.strip_tags($aRow['nip']).'<br>'.$status.'';
             $row[] = '<b>'.strip_tags($aRow['nama_lengkap']).'</b>';
             $row[] = strip_tags($aRow['email']);
             $row[] = strip_tags($aRow['jenis_kelamin']);
+            $row[] = strip_tags($aRow['posisi_nama'] ? $aRow['posisi_nama'] : '-'); // Add position name
             $row[] = '<div class="text-center">'.$active.'</div>';
             $row[] = '<div class="text-center">
                         <a href="javascript:void(0)" onClick="location.href='.$onlick[0].'user&op=profile&id='.epm_encode($aRow['user_id']).''.$onlick[1].';" class="table-action table-action-warning btn-tooltip" data-toggle="tooltip" title="Profil Lengkap">

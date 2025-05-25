@@ -1,0 +1,177 @@
+[25-May-2025 14:51:17 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:51:17 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:51:17 Asia/Jakarta] PHP Fatal error:  Cannot redeclare absen() (previously declared in /Users/mfirmansetiawan/Sites/localhost/absensi/sw-library/sw-function.php:16) in /Users/mfirmansetiawan/Sites/localhost/absensi/sw-library/sw-function.php on line 15
+[25-May-2025 14:51:52 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:51:52 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:51:52 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:51:52 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:51:52 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:51:52 Asia/Jakarta] Script execution complete
+[25-May-2025 14:55:18 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:55:18 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:55:18 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:55:18 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:55:18 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:55:18 Asia/Jakarta] Script execution complete
+[25-May-2025 14:56:58 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:56:58 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:56:58 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:56:58 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:56:58 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:56:58 Asia/Jakarta] Script execution complete
+[25-May-2025 14:57:34 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:57:34 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:57:34 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:57:34 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:57:34 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:57:34 Asia/Jakarta] Script execution complete
+[25-May-2025 14:57:38 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:57:38 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:57:38 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:57:38 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:57:38 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:57:38 Asia/Jakarta] Script execution complete
+[25-May-2025 14:57:59 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:57:59 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:57:59 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:57:59 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:57:59 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:57:59 Asia/Jakarta] Script execution complete
+[25-May-2025 14:58:07 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 14:58:07 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 14:58:07 Asia/Jakarta] Attempting database connection
+[25-May-2025 14:58:07 Asia/Jakarta] Database connected successfully
+[25-May-2025 14:58:07 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 14:58:07 Asia/Jakarta] Script execution complete
+[25-May-2025 15:00:19 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 15:00:19 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 15:00:19 Asia/Jakarta] Attempting database connection
+[25-May-2025 15:00:19 Asia/Jakarta] Database connected successfully
+[25-May-2025 15:00:19 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 15:00:19 Asia/Jakarta] Script execution complete
+[25-May-2025 15:00:31 Asia/Jakarta] Session: Array
+(
+    [csrf_token] => b91d9392c8b90c27b2e0426f35b8dbf93a21aa537bc9903a3b9717c5a69b8313
+)
+
+[25-May-2025 15:00:31 Asia/Jakarta] Cookies: Array
+(
+    [stylesheet2] => 
+    [ADMIN_KEY] => 17VDJ0WQ==
+    [KEY] => e964188f02b19472516c82f845a957ea2b91aef12a1f700255a2b83c2a1489c2
+    [PHPSESSID] => 29ufbgi9d8aa0brtngr48p04gt
+    [sidenav-state] => pinned
+)
+
+[25-May-2025 15:00:31 Asia/Jakarta] Attempting database connection
+[25-May-2025 15:00:31 Asia/Jakarta] Database connected successfully
+[25-May-2025 15:00:31 Asia/Jakarta] Permission query: SELECT modul_id FROM role WHERE lihat='Y' AND level_id='1' AND modul_id='16'
+[25-May-2025 15:00:31 Asia/Jakarta] Script execution complete
