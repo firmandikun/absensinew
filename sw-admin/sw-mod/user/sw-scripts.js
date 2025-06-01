@@ -69,21 +69,18 @@ function loadData(){
                 },
             },
             "columns": [
-                {"data": "no"}, 
-                {"data": "nip"},
-                {"data": "nama_lengkap"},
-                {"data": "email"},
-                {"data": "jenis_kelamin"},
-                {"data": "posisi_nama", "render": function(data, type, row) {
-                    return data ? strip_tags(data) : '-'; 
-                }},
-                {"data": "status"},
-                {"data": "actions"}
+                {data: null, render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                }}, // No urut
+                {data: 0}, // NIP + status 
+                {data: 1}, // Nama
+                {data: 2}, // Email
+                {data: 3}, // Jenis Kelamin
+                {data: 4}, // Posisi/Jabatan
+                {data: 5}  // Aksi
             ],
             "columnDefs": [
-                {"targets": [0], "orderable": false},
-                {"targets": [5], "className": "text-left"},
-                {"targets": [6,7], "className": "text-center"}
+                {"targets": [0,5,6], "className": "text-center"}
             ],
         });
     });

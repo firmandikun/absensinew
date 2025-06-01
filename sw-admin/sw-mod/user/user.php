@@ -72,7 +72,6 @@ echo'
                     <th>Email</th>
                     <th>Jenis Kelamin</th>
                     <th class="text-center">Posisi/Jabatan</th>
-                    <th class="text-center">Status</th> 
                     <th class="text-center">Aksi</th>
                   </tr>
                 </thead>
