@@ -227,11 +227,7 @@ case 'add':
     }
 
 
-    if (empty($_POST['atasan'])) { 
-      $error[] = 'Atasan tidak boleh kosong';
-    } else {
-      $atasan = anti_injection($_POST['atasan']);
-    }
+     $atasan = NULL;
 
     if (empty($_FILES['files']['name'])){
       $error[]          = 'Foto belum di unggah.!';
@@ -440,11 +436,7 @@ $error = array();
   }
 
 
-  if (empty($_POST['atasan'])) { 
-    $error[] = 'Atasan tidak boleh kosong';
-  } else {
-    $atasan = anti_injection($_POST['atasan']);
-  }
+  
 
   if (empty($_FILES['files']['name'])){
     $files            = '';

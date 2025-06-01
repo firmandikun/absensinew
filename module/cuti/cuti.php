@@ -149,24 +149,6 @@ echo'
                             <label class="form-control-label">Alasan Cuti</label>
                             <textarea class="form-control keterangan" name="keterangan" rows="2" required></textarea>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-control-label">Atasan Langsung</label>
-                            <select class="form-control atasan" name="atasan" required>
-                                <option value="">...</option>';
-                                $query_atasan="SELECT admin_id,fullname FROM admin WHERE level='3'";
-                                $result_atasan= $connection->query($query_atasan);
-                                if ($result_atasan->num_rows > 0) {
-                                while ($data_atasan = $result_atasan->fetch_assoc()){
-                                    echo'<option value="'.strip_tags($data_atasan['admin_id']).'">'.strip_tags($data_atasan['fullname']).'</option>';
-                                }
-                                }else{
-                                    echo'<option value="0">Data tidak ditemukan</option>';
-                                }
-                        echo'
-                            </select>
-                        </div>
-
                         <div class="form-group">
                           <label>Upload bukti/surat cuti</label>
                           <div class="file-upload">

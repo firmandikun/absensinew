@@ -69,14 +69,11 @@ case 'add':
       $jumlah = anti_injection($_POST['jumlah']);
     }
 
-    if (empty($_POST['atasan'])) { 
-      $error[] = 'Atasan tidak boleh kosong';
-    } else {
-      $atasan = anti_injection($_POST['atasan']);
-    }
+    // Remove atasan validation, make it optional 
+    $atasan = NULL;
 
-if($id== ''){
-  if (empty($error)) {
+if($id == ''){
+    if (empty($error)) {
     $query_cuti ="SELECT cuti_id FROM cuti WHERE tanggal_mulai='$tanggal_mulai' AND user_id='$user_id'";
     $result_cuti = $connection->query($query_cuti);
     if(!$result_cuti->num_rows > 0){
@@ -109,7 +106,6 @@ if($id== ''){
                               tanggal_selesai,
                               jumlah,
                               keterangan,
-                              atasan,
                               files,
                               date,
                               time,
@@ -120,8 +116,7 @@ if($id== ''){
                               '$tanggal_selesai',
                               '$jumlah',
                               '$keterangan',
-                              '$atasan',
-                              '', /** Upload kosong */
+                              '$files',
                               '$date',
                               '$time_sekarang',
                               'Y')";
@@ -199,7 +194,6 @@ if($id== ''){
                               tanggal_selesai,
                               jumlah,
                               keterangan,
-                              atasan,
                               files,
                               date,
                               time,
@@ -210,8 +204,7 @@ if($id== ''){
                               '$tanggal_selesai',
                               '$jumlah',
                               '$keterangan',
-                              '$atasan',
-                              '', /** Upload kosong */
+                              '$files',
                               '$date',
                               '$time_sekarang',
                               'Y')";
@@ -313,11 +306,10 @@ if($id== ''){
             foreach ($error as $key => $values) {            
                 echo"$values\n";
             }
-        }
-
-}else{
-  if (empty($error)) {
-    /** Update Cuti */
+      }
+} else {
+    if (empty($error)) {
+        /** Update Cuti */
     $query_pegawai ="SELECT nama_lengkap,posisi_id,lokasi_id FROM user WHERE user_id='$user_id'";
     $result_pegawai = $connection->query($query_pegawai);
     $data_pegawai = $result_pegawai->fetch_assoc();
@@ -443,7 +435,6 @@ if($id== ''){
       echo"$values\n";
     }
   }
-
 }
 
 

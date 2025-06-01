@@ -71,6 +71,12 @@ else{
         }
     }
 
+    if ($sWhere == "") {
+        $sWhere = "WHERE posisi_nama != 'admin'";
+    } else {
+        $sWhere .= " AND posisi_nama != 'admin'";
+    }
+
     $sQuery = " SELECT SQL_CALC_FOUND_ROWS ".str_replace(" , ", " ", implode(", ", $aColumns))."
         FROM $sTable
         $sWhere

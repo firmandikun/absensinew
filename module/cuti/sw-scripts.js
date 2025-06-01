@@ -180,7 +180,6 @@ $(document).on('click', '.btn-update', function(){
             $('.tanggal-mulai').val(response.tanggal_mulai);
             $('.tanggal-selesai').val(response.tanggal_selesai);
             $('.keterangan').val(response.keterangan);
-            $('.atasan').val(response.atasan);
 
             $('.file-upload-image').attr('src','./sw-content/cuti/'+response.files+'');
             $('.image-upload-wrap').hide();
@@ -242,4 +241,3 @@ $('.btn-print').click(function (e) {
     window.open(url, '_blank');
 });
 
-    

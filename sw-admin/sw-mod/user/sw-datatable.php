@@ -57,7 +57,7 @@ else{
         }
     }
 
-    $sWhere = "";
+    $sWhere = "WHERE posisi.posisi_nama != 'admin'"; // Exclude admin positions
     if (isset($_GET['sSearch']) && $_GET['sSearch'] != "")
     {
         $sWhere = "WHERE (";
@@ -189,7 +189,7 @@ else{
             $row[] = '<b>'.strip_tags($aRow['nama_lengkap']).'</b>';
             $row[] = strip_tags($aRow['email']);
             $row[] = strip_tags($aRow['jenis_kelamin']);
-            $row[] = strip_tags($aRow['posisi_nama'] ? $aRow['posisi_nama'] : '-'); // Add position name
+            $row[] = strip_tags($aRow['posisi_nama']); // Show position without additional filtering
             $row[] = '<div class="text-center">'.$active.'</div>';
             $row[] = '<div class="text-center">
                         <a href="javascript:void(0)" onClick="location.href='.$onlick[0].'user&op=profile&id='.epm_encode($aRow['user_id']).''.$onlick[1].';" class="table-action table-action-warning btn-tooltip" data-toggle="tooltip" title="Profil Lengkap">

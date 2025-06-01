@@ -172,23 +172,6 @@ echo'
                           <input type="number" class="form-control jumlah" name="jumlah" required>
                       </div>
 
-                      <div class="form-group">
-                            <label class="form-control-label">Atasan Langsung</label>
-                            <select class="form-control atasan" name="atasan" required>
-                                <option value="">...</option>';
-                                $query_atasan="SELECT admin_id,fullname FROM admin WHERE level='3'";
-                                $result_atasan= $connection->query($query_atasan);
-                                if ($result_atasan->num_rows > 0) {
-                                while ($data_atasan = $result_atasan->fetch_assoc()){
-                                    echo'<option value="'.strip_tags($data_atasan['admin_id']).'">'.strip_tags($data_atasan['fullname']).'</option>';
-                                }
-                                }else{
-                                    echo'<option value="0">Data tidak ditemukan</option>';
-                                }
-                        echo'
-                            </select>
-                        </div>
-
                         <div class="form-group">
                         <label>Upload Foto</label>
                         <div class="file-upload">
