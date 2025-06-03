@@ -38,8 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("ss", $nama, $tipe);
             $stmt->execute();
             $stmt->close();
-
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: ./type-izin");
             exit;
         }
     } elseif ($action === 'update') {
@@ -52,8 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("ssi", $nama, $tipe, $id);
             $stmt->execute();
             $stmt->close();
-
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: ./type-izin");
             exit;
         } else {
             $error = "Data tidak valid untuk update";
@@ -65,8 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $stmt->close();
-
-            header("Location: " . $_SERVER['PHP_SELF']);
+            header("Location: ./type-izin");
             exit;
         } else {
             $error = "ID tidak valid untuk hapus";
@@ -86,6 +83,8 @@ $result = $connection->query("SELECT * FROM lain_lain WHERE tipe != 'timezone' O
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Type Izin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <div class="container-fluid mt-5">
@@ -211,109 +210,84 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM fully loaded and parsed");
-    
-    // Cari semua tombol edit
-    const editButtons = document.querySelectorAll('.editBtn');
-    console.log(`Jumlah tombol edit ditemukan: ${editButtons.length}`);
-    
-    // Event listener untuk setiap tombol edit
-    editButtons.forEach(function(button) {
-        button.addEventListener('click', function(e) {
-            console.log("Tombol edit diklik!");
-            
-            // Ambil data dari atribut data-*
-            const id = this.getAttribute('data-id');
-            const nama = this.getAttribute('data-nama');
-            const tipe = this.getAttribute('data-tipe');
-            
-            console.log("Data dari tombol:", {id, nama, tipe});
-            
-            // Set nilai ke form edit
-            const editId = document.getElementById('editId');
-            const editNama = document.getElementById('editNama');
-            const editTipe = document.getElementById('editTipe');
-            
-            if (editId && editNama && editTipe) {
-                editId.value = id || '';
-                editNama.value = nama || '';
-                editTipe.value = tipe || '';
-                
-                console.log("Nilai form edit setelah di-set:", {
-                    id: editId.value,
-                    nama: editNama.value,
-                    tipe: editTipe.value
+$(document).ready(function() {
+    // Handle form submissions
+    $('#formAdd').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#modalAdd').modal('hide');
+                swal({
+                    title: "Berhasil!",
+                    text: "Data berhasil ditambahkan!",
+                    icon: "success",
+                    timer: 2000
+                }).then(() => {
+                    location.reload();
                 });
-            } else {
-                console.error("Element form edit tidak ditemukan!");
             }
         });
     });
-    
-    // Alternative method using Bootstrap modal events
-    const modalEdit = document.getElementById('modalEdit');
-    if (modalEdit) {
-        modalEdit.addEventListener('show.bs.modal', function(event) {
-            console.log("Modal edit akan ditampilkan");
-            
-            // Get the button that triggered the modal
-            const button = event.relatedTarget;
-            
-            if (button && button.classList.contains('editBtn')) {
-                const id = button.getAttribute('data-id');
-                const nama = button.getAttribute('data-nama');
-                const tipe = button.getAttribute('data-tipe');
-                
-                console.log("Data dari modal event:", {id, nama, tipe});
-                
-                // Update the modal's content
-                const editId = document.getElementById('editId');
-                const editNama = document.getElementById('editNama');
-                const editTipe = document.getElementById('editTipe');
-                
-                if (editId) editId.value = id || '';
-                if (editNama) editNama.value = nama || '';
-                if (editTipe) editTipe.value = tipe || '';
-                
-                console.log("Final values set:", {
-                    id: editId ? editId.value : 'not found',
-                    nama: editNama ? editNama.value : 'not found',
-                    tipe: editTipe ? editTipe.value : 'not found'
+
+    // Handle edit form submissions
+    $('.form-edit').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function(response) {
+                $('.modal').modal('hide');
+                swal({
+                    title: "Berhasil!",
+                    text: "Data berhasil diupdate!",
+                    icon: "success",
+                    timer: 2000
+                }).then(() => {
+                    location.reload();
                 });
             }
         });
-    }
-    
-    // Debug: Cek apakah modal edit ada
-    const modalEdit = document.getElementById('modalEdit');
-    if (modalEdit) {
-        console.log("Modal edit ditemukan");
+    });
+
+    // Handle delete
+    $('.btn-delete').on('click', function(e) {
+        e.preventDefault();
+        const id = $(this).data('id');
         
-        // Event listener ketika modal ditampilkan
-        modalEdit.addEventListener('shown.bs.modal', function() {
-            console.log("Modal edit telah ditampilkan");
-            // Focus ke input nama
-            const editNama = document.getElementById('editNama');
-            if (editNama) {
-                editNama.focus();
+        swal({
+            title: "Anda yakin?",
+            text: "Data akan dihapus permanen!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    data: {
+                        action: 'delete',
+                        id: id
+                    },
+                    success: function(response) {
+                        swal({
+                            title: "Berhasil!",
+                            text: "Data berhasil dihapus!",
+                            icon: "success",
+                            timer: 2000
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                });
             }
         });
-    } else {
-        console.error("Modal edit tidak ditemukan!");
-    }
-    
-    // Debug form submit
-    const formEdit = document.getElementById('formEdit');
-    if (formEdit) {
-        formEdit.addEventListener('submit', function(e) {
-            const formData = new FormData(this);
-            console.log("Form akan disubmit dengan data:");
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
-        });
-    }
+    });
 });
 </script>
 

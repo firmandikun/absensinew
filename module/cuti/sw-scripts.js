@@ -20,29 +20,69 @@ function loading(){
     }
 });*/
 
+function confirmDelete(id, name) {
+    swal({
+        text: "Anda yakin ingin menghapus user " + name + "?",
+        icon: "warning",
+        buttons: {
+            cancel: true,
+            confirm: true,
+        },
+        dangerMode: true,
+    }).then((value) => {
+        if (value) {
+            loading();
+            $.ajax({  
+                url: './sw-mod/user/sw-proses.php?action=delete',
+                type: 'POST',    
+                data: {id: id},  
+                success: function(data) { 
+                    if (data == 'success') {
+                        swal({title: 'Berhasil!', text: 'Data berhasil dihapus!', icon: 'success', timer: 2500});
+                        $('.datatable-user').DataTable().ajax.reload();
+                    } else {
+                        swal({title: 'Gagal!', text: data, icon: 'error', timer: 2500});
+                    }
+                }  
+            });  
+        }
+    });
+}
 
 
 /** Upload Drag and Drop */
 function readURL(input) {
     if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
+        var file = input.files[0];
         $('.image-upload-wrap').hide();
-        $('.file-upload-image').attr('src', e.target.result);
         $('.file-upload-content').show();
-        //$('.image-title').html(input.files[0].name);
-      };
-      reader.readAsDataURL(input.files[0]);
-    } else {
-      removeUpload();
-    }
-  }
 
-  function removeUpload() {
-    $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+        if(file.type === 'application/pdf') {
+            // Handle PDF file
+            $('.image-preview').hide();
+            $('.pdf-preview').show();
+            $('.pdf-filename').html('<strong>' + file.name + '</strong>');
+            $('.file-upload-image').attr('src', ''); // Clear image
+        } else {
+            // Handle image file
+            $('.pdf-preview').hide();
+            $('.image-preview').show();
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('.file-upload-image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+}
+
+function removeUpload() {
+    $('.file-upload-input').val('');
+    $('.image-preview').hide();
+    $('.pdf-preview').hide();
     $('.file-upload-content').hide();
     $('.image-upload-wrap').show();
-  }
+}
   $('.image-upload-wrap').bind('dragover', function () {
       $('.image-upload-wrap').addClass('image-dropping');
   });

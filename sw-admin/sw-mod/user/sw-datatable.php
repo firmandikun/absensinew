@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
 if(!isset($_COOKIE['ADMIN_KEY']) && !isset($_COOKIE['KEY'])){
   header('location:./login');
   exit;
@@ -14,7 +15,7 @@ else{
         $modifikasi ='N';
     }
 
-    if(isset($_POST['modifikasi'])){
+    if(isset($_POST['hapus'])){
         $hapus = anti_injection($_POST['hapus']);
     }else{
         $hapus ='N';
@@ -110,29 +111,41 @@ else{
     );
 
     $no = 0;
-    while ($aRow = mysqli_fetch_array($rResult)) {
-        if($aRow['status'] == 'Online'){
-            $status = '<small class="badge badge-dot" style="font-size:13px;"><i class="bg-success"></i>Online</small>';
-        } else {
-            $status = '<small class="badge badge-dot" style="font-size:13px;"><i class="bg-danger"></i>Offline</small>';
-        }
-
-        $row = array();
-        // Match columns with table headers
-        $row[] = strip_tags($aRow['nip']).'<br>'.$status;  // NIP + status
-        $row[] = '<b>'.strip_tags($aRow['nama_lengkap']).'</b>'; // Nama
-        $row[] = strip_tags($aRow['email']); // Email
-        $row[] = strip_tags($aRow['jenis_kelamin']); // Jenis Kelamin
-        $row[] = '<div class="text-center">'.strip_tags($aRow['posisi_nama'] ?: '-').'</div>'; // Posisi/Jabatan
-        $row[] = '<div class="text-center">
-                    <a href="javascript:void(0)" onClick="location.href=\'./user&op=profile&id='.epm_encode($aRow['user_id']).'\';" class="table-action table-action-warning btn-tooltip" data-toggle="tooltip" title="Profil Lengkap">
-                        <i class="fas fa-user-check"></i>
-                    </a>
-                    '.$btn_update.''.$btn_hapus.'
-                </div>'; // Aksi
-        
-        $output['aaData'][] = $row;
+   // Inside your while loop where you generate table rows
+while ($aRow = mysqli_fetch_array($rResult)) {
+    if($aRow['status'] == 'Online'){
+        $status = '<small class="badge badge-dot" style="font-size:13px;"><i class="bg-success"></i>Online</small>';
+    } else {
+        $status = '<small class="badge badge-dot" style="font-size:13px;"><i class="bg-danger"></i>Offline</small>';
     }
+
+    // Initialize buttons
+    $buttons = '<div class="text-center">
+                <a href="javascript:void(0)" onClick="location.href=\'./user&op=profile&id='.epm_encode($aRow['user_id']).'\';" class="table-action table-action-warning btn-tooltip" data-toggle="tooltip" title="Profil Lengkap">
+                    <i class="fas fa-user-check"></i>
+                </a>';
+
+    
+    // Add delete button if deletion is allowed
+    if($hapus == 'Y') {
+        $buttons .= '<a href="javascript:void(0)" class="table-action table-action-danger btn-delete btn-tooltip" data-id="'.epm_encode($aRow['user_id']).'" data-name="'.$aRow['nama_lengkap'].'" data-toggle="tooltip" title="Hapus Data">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>';
+    }
+
+    $buttons .= '</div>';
+
+    $row = array();
+    // Match columns with table headers
+    $row[] = strip_tags($aRow['nip']).'<br>'.$status;  // NIP + status
+    $row[] = '<b>'.strip_tags($aRow['nama_lengkap']).'</b>'; // Nama
+    $row[] = strip_tags($aRow['email']); // Email
+    $row[] = strip_tags($aRow['jenis_kelamin']); // Jenis Kelamin
+    $row[] = '<div class="text-center">'.strip_tags($aRow['posisi_nama'] ?: '-').'</div>'; // Posisi/Jabatan
+    $row[] = $buttons; // Aksi
+    
+    $output['aaData'][] = $row;
+}
     echo json_encode($output);
   
 }

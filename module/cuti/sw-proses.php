@@ -7,8 +7,8 @@
   require_once'../../sw-library/sw-function.php';
   require_once'../../sw-library/csrf.php';
   require_once'../../module/oauth/user.php';
-  $max_size = 20000000; //2MB
-  $allowed_ext = array('jpg','jpeg','JPG','gif', 'png','PNG');
+  $max_size = 20000000; //20MB
+  $allowed_ext = array('jpg','jpeg','JPG','gif','png','PNG','pdf','PDF');
   $uploadPath       = '../../sw-content/cuti/';
   function resizeImage($resourceType,$image_width,$image_height){
     $resizeWidth = 500;
@@ -343,7 +343,12 @@ case 'add':
                             break;
                 
                         default:
-                            $imageProcess = 0;
+                            // Handle PDF files
+                            if(strtolower($fileExt) === 'pdf') {
+                                move_uploaded_file($file_tmp, $uploadPath.$files_name.'.'.$fileExt);
+                            } else {
+                                $imageProcess = 0;
+                            }
                         break;
                       }
                     }
@@ -566,7 +571,12 @@ $error = array();
                     break;
         
                 default:
-                    $imageProcess = 0;
+                    // Handle PDF files
+                    if(strtolower($fileExt) === 'pdf') {
+                        move_uploaded_file($file_tmp, $uploadPath.$files_name.'.'.$fileExt);
+                    } else {
+                        $imageProcess = 0;
+                    }
                 break;
               }
             }

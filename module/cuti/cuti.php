@@ -153,20 +153,32 @@ echo'
                           <label>Upload bukti/surat cuti</label>
                           <div class="file-upload">
                               <div class="image-upload-wrap">
-                                <input class="file-upload-input fileInput files" type="file" name="files" onchange="readURL(this);" accept="image/*" required>
+                                <input class="file-upload-input fileInput files" type="file" name="files" onchange="readURL(this);" accept="image/*,application/pdf" required>
                                   <div class="drag-text">
                                     <i class="lni lni-cloud-upload"></i>
                                     <h3>Drag and drop files here</h3>
                                   </div>
                               </div>
-                                <div class="file-upload-content">
-                                  <img class="file-upload-image" src="template/img/sw-small.jpg" alt="Upload" height="150">
-                                    <div class="image-title-wrap">
-                                      <button type="button" onclick="removeUpload()" class="btn btn-danger btn-sm"><i class="fas fa-undo"></i> Ubah<span class="image-title"></span></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <small class="text-danger">Silahkan upload foto dengan format JPG,JPEG maksimal 2M</small>
+                              <div class="file-upload-content">
+                                  <!-- Image preview -->
+                                  <div class="image-preview">
+                                      <img class="file-upload-image" src="template/img/sw-small.jpg" alt="Upload" height="150">
+                                  </div>
+                                  <!-- PDF preview -->
+                                  <div class="pdf-preview" style="display:none;">
+                                      <div class="text-center">
+                                          <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
+                                          <h6 class="pdf-name mt-2"></h6>
+                                      </div>
+                                  </div>
+                                  <div class="image-title-wrap mt-3">
+                                      <button type="button" onclick="removeUpload()" class="btn btn-danger btn-sm">
+                                          <i class="fas fa-undo"></i> Ubah
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                          <small class="text-danger">Silahkan upload file dengan format JPG, JPEG, atau PDF maksimal 2MB</small>
                         </div>
 
                     </div>
@@ -184,5 +196,39 @@ echo'
         <button type="submit" class="btn btn-add btn-primary"><span class="material-icons">add_circle</span></button>
         <button type="submit" class="btn btn-info btn-print"><span class="material-icons">print</span></button>
     </div>
-</main>';
-}?>
+</main>';}
+?>
+<script>
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var file = input.files[0];
+        $('.image-upload-wrap').hide();
+        $('.file-upload-content').show();
+
+        // Clear both previews first
+        $('.image-preview, .pdf-preview').hide();
+        
+        if (file.type === 'application/pdf') {
+            // Show PDF preview
+            $('.pdf-preview').show();
+            $('.pdf-name').html('<strong>File: ' + file.name + '</strong>');
+        } else {
+            // Show image preview
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('.image-preview').show();
+                $('.file-upload-image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+}
+
+function removeUpload() {
+    $('.file-upload-input').val('');
+    $('.file-upload-content').hide();
+    $('.image-upload-wrap').show();
+    $('.pdf-preview').hide();
+    $('.image-preview').hide();
+}
+</script>
