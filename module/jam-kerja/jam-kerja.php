@@ -27,9 +27,6 @@ echo'
 
         <div class="load-data">
         </div>
-        
-
-    
     </div>
 </main>
 

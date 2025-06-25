@@ -107,6 +107,12 @@ $(".form-add").validate({
             required:true,
         },
         
+        jumlah: {
+            required: true,
+            min: 1,
+            number: true
+        },
+        
         keterangan: {
             required: true,
             minlength: 6,
@@ -119,11 +125,15 @@ $(".form-add").validate({
         field: {
             required: "Silahkan masukkan data sesuai inputan",
         },
-
+        jumlah: {
+            required: "Silahkan masukkan jumlah hari izin",
+            min: "Jumlah hari minimal 1 hari",
+            number: "Jumlah hari harus berupa angka"
+        },
     },
     // in the "action" attribute of the form when valid
     submitHandler: submitForm_Add
-  });
+});
 
 /* handle form submit */
 function submitForm_Add() { 
@@ -173,6 +183,7 @@ $(document).on('click', '.btn-update', function(){
             $('.id').val(response.izin_id);
             $('.tanggal-mulai').val(response.tanggal_mulai);
             $('.tanggal-selesai').val(response.tanggal_selesai);
+            $('.jumlah').val(response.jumlah);
             $('.jenis').val(response.jenis);
             $('.keterangan').val(response.keterangan);
             //$('.files').val(response.files);

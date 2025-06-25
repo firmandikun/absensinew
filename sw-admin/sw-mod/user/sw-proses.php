@@ -108,6 +108,9 @@ case 'add':
       $posisi = anti_injection($_POST['posisi']);
     }
 
+    $libur = isset($_POST['libur']) ? implode(',', $_POST['libur']) : '';
+    
+    $atasan_id = !empty($_POST['atasan_id']) ? anti_injection($_POST['atasan_id']) : 'NULL';
     
   if (empty($error)) {
 
@@ -143,6 +146,7 @@ case 'add':
                     alamat,
                     lokasi_id,
                     posisi_id,
+                    atasan_id,
                     qrcode,
                     avatar,
                     tanggal_registrasi,
@@ -151,7 +155,8 @@ case 'add':
                     ip,
                     browser,
                     status,
-                    active) values('$user_id',
+                    active,
+                    libur) values('$user_id',
                     '$email',
                     '$password',
                     '$nip',
@@ -163,6 +168,7 @@ case 'add':
                     '$alamat',
                     '$lokasi',
                     '$posisi',
+                    $atasan_id,
                     '$qrcode',
                     'avatar.jpg',
                     '$date $time',
@@ -171,7 +177,8 @@ case 'add':
                     '$ip',
                     '$browser',
                     'Offline',
-                    'Y')";
+                    'Y',
+                    '$libur')";
         if($connection->query($add) === false) { 
               die($connection->error.__LINE__); 
               echo'Data tidak berhasil disimpan!';
@@ -269,6 +276,9 @@ $error = array();
       $posisi = anti_injection($_POST['posisi']);
     }
 
+    $libur = isset($_POST['libur']) ? implode(',', $_POST['libur']) : '';
+    
+    $atasan_id = !empty($_POST['atasan_id']) ? anti_injection($_POST['atasan_id']) : 'NULL';
     
   if (empty($error)) {
     $update="UPDATE user SET nip='$nip',
@@ -280,7 +290,9 @@ $error = array();
             telp='$telp',
             alamat='$alamat',
             lokasi_id='$lokasi',
-            posisi_id='$posisi' WHERE user_id='$id'"; 
+            posisi_id='$posisi',
+            atasan_id=$atasan_id,
+            libur='$libur' WHERE user_id='$id'"; 
     if($connection->query($update) === false) { 
         die($connection->error.__LINE__); 
         echo'Data tidak berhasil disimpan!';

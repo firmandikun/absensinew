@@ -20,9 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `absensi_v5.2`
 --
-
 -- --------------------------------------------------------
-
 --
 -- Struktur dari tabel `absen`
 --

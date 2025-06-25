@@ -281,3 +281,36 @@ $('.btn-print').click(function (e) {
     window.open(url, '_blank');
 });
 
+function hitungHariCuti() {
+    var tglMulai = $(".tanggal-mulai").val();
+    var tglSelesai = $(".tanggal-selesai").val();
+    if (tglMulai && tglSelesai) {
+        var partsMulai = tglMulai.split('-');
+        var partsSelesai = tglSelesai.split('-');
+        if(partsMulai.length === 3 && partsSelesai.length === 3) {
+            var dateMulai = new Date(partsMulai[2], partsMulai[1] - 1, partsMulai[0]);
+            var dateSelesai = new Date(partsSelesai[2], partsSelesai[1] - 1, partsSelesai[0]);
+            var diffTime = dateSelesai - dateMulai;
+            var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            if(diffDays > 0) {
+                $("#info-jumlah-hari").text("Jumlah hari cuti: " + diffDays + " hari").show();
+            } else {
+                $("#info-jumlah-hari").text("Tanggal selesai harus setelah tanggal mulai").show();
+            }
+        }
+    } else {
+        $("#info-jumlah-hari").hide();
+    }
+}
+
+$(document).on('change', '.tanggal-mulai, .tanggal-selesai', hitungHariCuti);
+$(document).on('input', '.tanggal-mulai, .tanggal-selesai', hitungHariCuti);
+
+$(document).on('shown.bs.modal', '.modal-add', function() {
+    $("#info-jumlah-hari").text("Jumlah hari cuti: 1 hari").show();
+    hitungHariCuti();
+});
+
+$(document).on('change', '.tanggal-selesai', hitungHariCuti);
+$(document).on('input', '.tanggal-selesai', hitungHariCuti);
+

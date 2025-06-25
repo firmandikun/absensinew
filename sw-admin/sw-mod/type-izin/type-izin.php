@@ -30,12 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'add') {
         $nama = $connection->real_escape_string($_POST['nama'] ?? '');
         $tipe = $connection->real_escape_string($_POST['tipe'] ?? '');
+        $jumlah = $connection->real_escape_string($_POST['jumlah'] ?? '0');
 
         if ($nama === '' || $tipe === '') {
             $error = "Nama dan Tipe harus diisi";
         } else {
-            $stmt = $connection->prepare("INSERT INTO lain_lain (nama, tipe) VALUES (?, ?)");
-            $stmt->bind_param("ss", $nama, $tipe);
+            $stmt = $connection->prepare("INSERT INTO lain_lain (nama, tipe, jumlah) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $nama, $tipe, $jumlah);
             $stmt->execute();
             $stmt->close();
             header("Location: ./type-izin");
@@ -45,10 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = intval($_POST['id'] ?? 0);
         $nama = $connection->real_escape_string($_POST['nama'] ?? '');
         $tipe = $connection->real_escape_string($_POST['tipe'] ?? '');
+        $jumlah = $connection->real_escape_string($_POST['jumlah'] ?? '0');
 
         if ($id > 0 && $nama !== '' && $tipe !== '') {
-            $stmt = $connection->prepare("UPDATE lain_lain SET nama = ?, tipe = ? WHERE lain_lain_id = ?");
-            $stmt->bind_param("ssi", $nama, $tipe, $id);
+            $stmt = $connection->prepare("UPDATE lain_lain SET nama = ?, tipe = ?, jumlah = ? WHERE lain_lain_id = ?");
+            $stmt->bind_param("ssii", $nama, $tipe, $jumlah, $id);
             $stmt->execute();
             $stmt->close();
             header("Location: ./type-izin");
@@ -100,13 +102,19 @@ $result = $connection->query("SELECT * FROM lain_lain WHERE tipe != 'timezone' O
 
    <table class="table align-items-center table-striped datatable">
         <thead>
-            <tr><th>Nama</th><th>Tipe</th><th>Aksi</th></tr>
+            <tr>
+                <th>Nama</th>
+                <th>Tipe</th>
+                <th>Jumlah</th>
+                <th>Aksi</th>
+            </tr>
         </thead>
         <tbody>
             <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
                 <td><?= htmlspecialchars($row['nama']) ?></td>
                 <td><?= htmlspecialchars($row['tipe']) ?></td>
+                <td><?= htmlspecialchars($row['jumlah']) ?></td>
                 <td>
                     <button class="btn btn-warning btn-sm"
                         data-bs-toggle="modal" 
@@ -152,6 +160,15 @@ $result = $connection->query("SELECT * FROM lain_lain WHERE tipe != 'timezone' O
                                            required 
                                            autocomplete="off" />
                                 </div>
+                                <div class="mb-3">
+                                    <label for="editJumlah<?= $row['lain_lain_id'] ?>" class="form-label">Jumlah Hari</label>
+                                    <input type="number" 
+                                           name="jumlah" 
+                                           id="editJumlah<?= $row['lain_lain_id'] ?>"
+                                           class="form-control" 
+                                           value="<?= htmlspecialchars($row['jumlah']) ?>" 
+                                           required />
+                                </div>
                                 <input type="hidden" name="id" value="<?= $row['lain_lain_id'] ?>" />
                                 <input type="hidden" name="action" value="update" />
                             </div>
@@ -179,7 +196,8 @@ $result = $connection->query("SELECT * FROM lain_lain WHERE tipe != 'timezone' O
             </div>
             <div class="modal-body">
                 <input type="text" name="nama" class="form-control mb-2" placeholder="Nama" required />
-                <input type="text" name="tipe" class="form-control" placeholder="Tipe" required />
+                <input type="text" name="tipe" class="form-control mb-2" placeholder="Tipe" required />
+                <input type="number" name="jumlah" class="form-control" placeholder="Jumlah Hari" required />
                 <input type="hidden" name="action" value="add" />
             </div>
             <div class="modal-footer">

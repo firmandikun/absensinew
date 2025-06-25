@@ -62,6 +62,17 @@ if (empty($_POST['level'])) {
   $level = anti_injection($_POST['level']);
 }
 
+// Validate posisi_id if level is 3 (Atasan)
+if ($level == '3') {
+  if (empty($_POST['posisi_id'])) {
+    $error[] = 'Posisi harus dipilih untuk level Atasan';
+  } else {
+    $posisi_id = anti_injection($_POST['posisi_id']);
+  }
+} else {
+  $posisi_id = null;
+}
+
 if (empty($_POST['active'])) {
   $active ='N';
 }else{
@@ -86,6 +97,7 @@ if(!$result ->num_rows >0){
                 time,
                 status,
                 level,
+                posisi_id,
                 ip,
                 browser,
                 active) values('$fullname',
@@ -99,6 +111,7 @@ if(!$result ->num_rows >0){
                 '$date $time',
                 'Offline',
                 '$level',
+                " . ($posisi_id ? "'$posisi_id'" : "NULL") . ",
                 '$ip',
                 '$browser',
                 '$active')";
@@ -162,6 +175,17 @@ $error = array();
       $level = anti_injection($_POST['level']);
     }
 
+    // Validate posisi_id if level is 3 (Atasan)
+    if ($level == '3') {
+      if (empty($_POST['posisi_id'])) {
+        $error[] = 'Posisi harus dipilih untuk level Atasan';
+      } else {
+        $posisi_id = anti_injection($_POST['posisi_id']);
+      }
+    } else {
+      $posisi_id = null;
+    }
+
     if (empty($_POST['active'])) {
       $active ='N';
     }else{
@@ -174,7 +198,8 @@ $error = array();
             phone='$phone',
             email='$email',
             level='$level',
-            active='$active' WHERE admin_id='$id'"; 
+            posisi_id=" . ($posisi_id ? "'$posisi_id'" : "NULL") . ",
+            active='$active' WHERE admin_id='$id'";
     if($connection->query($update) === false) { 
         die($connection->error.__LINE__); 
         echo'Data tidak berhasil disimpan!';

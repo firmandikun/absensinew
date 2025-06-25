@@ -121,7 +121,6 @@ echo'
                         <label class="form-control-label">Periode Cuti</label>
                             <div class="form-row">
                                 <div class="col">
-                                    
                                     <div class="input-group mb-3">
                                         <input type="text" class="form-control tanggal-mulai datepicker" name="tanggal_mulai" value="'.tanggal_ind($date).'" required>
                                         <div class="input-group-prepend">
@@ -130,7 +129,6 @@ echo'
                                             </span>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
@@ -143,6 +141,7 @@ echo'
                                     </div>
                                 </div>
                             </div>
+                            <div id="info-jumlah-hari" class="text-info mb-2" style="display:none;"></div>
                         </div>
 
                         <div class="form-group">

@@ -6,14 +6,21 @@ if(!isset($_COOKIE['ADMIN_KEY']) && !isset($_COOKIE['KEY'])){
 else{
   $query_role ="SELECT lihat,modifikasi,hapus FROM role WHERE modul_id='8' AND level_id='$current_user[level]'";
   $result_role = $connection->query($query_role);
-  if($result_role->num_rows > 0){
-    $data_role = $result_role->fetch_assoc();
 
-  switch(@$_GET['op']){ 
-    default:
+  // Tambahkan pengecekan khusus untuk level 3 (atasan)
+  if($result_role->num_rows > 0 || $current_user['level'] == 3){
+    if($result_role->num_rows > 0){
+      $data_role = $result_role->fetch_assoc();
+    } else {
+      // Default: atasan (level 3) bisa lihat, tidak bisa modifikasi/hapus
+      $data_role = ['lihat'=>'Y','modifikasi'=>'N','hapus'=>'N'];
+    }
+
+    switch(@$_GET['op']){ 
+      default:
 echo'
 <span class="modifikasi d-none">'.$data_role['modifikasi'].'</span>
-<span class="hapus d-none">'.$data_role['hapus'].'</span>
+<span class="hapus d-none">'.$current_user['level'].'</span>
 <!-- Header -->
 <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -74,8 +81,14 @@ echo'
                     <th>Jenis Izin</th>
                     <th>Keterangan</th>
                     <th class="text-center">Foto</th>
-                    <th>Tanggal Terbit</th>
-                    <th class="text-center">Status</th>
+                    <th>Tanggal Terbit</th>';
+                    if($current_user['level'] == 3){
+                      echo '<th class="text-center">Status Supervisor</th>';
+                    }else{
+                      echo '<th class="text-center">Status</th>';
+                      echo '<th class="text-center">Status Supervisor</th>';
+                    }
+                    echo'
                     <th class="text-center"  width="6">Aksi</th>
                   </tr>
                 </thead>
@@ -143,10 +156,29 @@ echo'
                     <div class="form-group">
                         <label>User</label>
                         <select name="user_id" class="form-control user"  required>';
-                          $query_pegawai = "SELECT user_id,nama_lengkap FROM user ORDER BY nama_lengkap ASC";
+                          $is_atasan = (isset($_SESSION['level']) && $_SESSION['level'] == 3) || (isset($current_user['level']) && $current_user['level'] == 3);
+                          $admin_id = isset($_SESSION['admin_id']) ? $_SESSION['admin_id'] : (isset($current_user['admin_id']) ? $current_user['admin_id'] : null);
+                          if($is_atasan && $admin_id){
+                            $query_pegawai = "SELECT user_id,nama_lengkap FROM user WHERE atasan_id = '".$admin_id."' ORDER BY nama_lengkap ASC";
+                          }else{
+                            $query_pegawai = "SELECT user_id,nama_lengkap FROM user ORDER BY nama_lengkap ASC";
+                          }
                           $result_pegawai = $connection->query($query_pegawai);
                           while ($data_pegawai = $result_pegawai->fetch_assoc()) {
                             echo'<option value="'.$data_pegawai['user_id'].'">'.strip_tags($data_pegawai['nama_lengkap']).'</option>';
+                          }
+                        echo'
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Atasan</label>
+                        <select name="atasan_id" class="form-control" required>
+                          <option value="">==Pilih Atasan==</option>';
+                          $query_atasan = "SELECT admin_id, fullname FROM admin WHERE level = 3";
+                          $result_atasan = $connection->query($query_atasan);
+                          while ($data_atasan = $result_atasan->fetch_assoc()) {
+                            echo '<option value="'.$data_atasan['admin_id'].'">'.strip_tags($data_atasan['fullname']).'</option>';
                           }
                         echo'
                         </select>
@@ -215,10 +247,9 @@ echo'
         </div>';
       }
   break;
-  }
+    }
   }else{
     theme_404();
   }
-}?>
-
-  
+}
+?>

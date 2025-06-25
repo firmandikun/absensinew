@@ -69,6 +69,11 @@ echo'
                         </div>
 
                         <div class="form-group">
+                            <label class="form-control-label">Jumlah Hari</label>
+                            <input type="number" class="form-control jumlah" name="jumlah" min="1" required>
+                        </div>
+
+                        <div class="form-group">
                             <label class="form-control-label">Status izin</label>
                             <select class="form-control jenis" name="jenis" required>';
                                 $query_status_izin="SELECT * FROM lain_lain WHERE tipe='izin'";

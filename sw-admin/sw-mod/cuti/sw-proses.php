@@ -37,6 +37,11 @@ case 'add':
       $user_id = anti_injection($_POST['user_id']);
     }
 
+    if (empty($_POST['atasan_id'])) {
+      $error[] = 'Atasan harus dipilih';
+    } else {
+      $atasan_id = anti_injection($_POST['atasan_id']);
+    }
 
     if (empty($_POST['jenis'])) { 
       $error[] = 'Jenis cuti tidak boleh kosong';
@@ -49,7 +54,6 @@ case 'add':
     } else {
       $keterangan = anti_injection($_POST['keterangan']);
     }
-
 
     if (empty($_POST['tanggal_mulai'])) { 
         $error[] = 'Priode cuti mulai tidak boleh kosong';
@@ -100,6 +104,7 @@ if($id == ''){
                 if($sisa_cuti > $jumlah){
                   if (empty($_FILES['files']['name'])){
                       $add ="INSERT INTO cuti (user_id,
+                              atasan_id,
                               nama_lengkap,
                               jenis,
                               tanggal_mulai,
@@ -110,13 +115,14 @@ if($id == ''){
                               date,
                               time,
                               status) values('$user_id',
+                              '$atasan_id',
                               '$data_pegawai[nama_lengkap]',
                               '$jenis',
                               '$tanggal_mulai',
                               '$tanggal_selesai',
                               '$jumlah',
                               '$keterangan',
-                              '$files',
+                              '$foto',
                               '$date',
                               '$time_sekarang',
                               'Y')";
@@ -188,6 +194,7 @@ if($id == ''){
                       $resizeFileName  = md5($file_name);
                       $foto            = ''.$resizeFileName.'.'.$fileExt.'';
                       $add ="INSERT INTO cuti (user_id,
+                              atasan_id,
                               nama_lengkap,
                               jenis,
                               tanggal_mulai,
@@ -198,13 +205,14 @@ if($id == ''){
                               date,
                               time,
                               status) values('$user_id',
+                              '$atasan_id',
                               '$data_pegawai[nama_lengkap]',
                               '$jenis',
                               '$tanggal_mulai',
                               '$tanggal_selesai',
                               '$jumlah',
                               '$keterangan',
-                              '$files',
+                              '$foto',
                               '$date',
                               '$time_sekarang',
                               'Y')";
@@ -548,7 +556,7 @@ case 'setujui':
               }
             }
           }else{
-            echo'Sebelumnya Data ini Sudah disetujui!';
+            echo'Sebelumnya Data ini Sudah ss disetujui!';
           }
       }else{
         echo'Data tidak ditemukan!';
@@ -611,6 +619,29 @@ if($data_cuti['status'] =='Y' OR $data_cuti['status'] =='-'){
 }else{
 echo'Data tidak temukan!';
 }
+
+
+case 'update_supervisor_status':
+    $id = anti_injection(epm_decode($_POST['id']));
+    $supervisor_status = trim(strtolower($_POST['supervisor_status'] ?? ''));
+
+    $allowed = ['pending','approved','rejected'];
+    if (!in_array($supervisor_status, $allowed)) {
+        exit('Status supervisor tidak valid!');
+    }
+
+    $update = "UPDATE cuti SET supervisor_status = '$supervisor_status' WHERE cuti_id = '$id'";
+
+    if ($connection->query($update) === false) {
+        echo 'error: '.$connection->error;
+    } else {
+        if ($connection->affected_rows > 0) {
+            echo 'success';
+        } else {
+            echo 'tidak ada perubahan (ID salah atau status sama)';
+        }
+    }
+    break;
 
 
 /* --------------- Delete ------------*/

@@ -19,7 +19,7 @@ else{
         $hapus ='N';
     }
 
-    $aColumns = ['izin_id', 'user_id', 'tanggal_mulai','tanggal_selesai','jenis','keterangan', 'files','time', 'date','status'];
+    $aColumns = ['izin_id', 'user_id', 'tanggal_mulai','tanggal_selesai','jenis','keterangan', 'files','time', 'date','status', 'supervisor_status'];
     $sIndexColumn = "izin_id";
     $sTable = "izin";
     $gaSql['user'] = DB_USER;
@@ -84,6 +84,19 @@ else{
         }
     }
 
+    // Ambil info user login
+    $current_level = isset($_SESSION['level']) ? $_SESSION['level'] : null;
+    $current_admin_id = isset($_SESSION['admin_id']) ? $_SESSION['admin_id'] : null;
+
+    // Filter untuk atasan
+    if ($current_level == 3 && $current_admin_id) {
+        if ($sWhere == "") {
+            $sWhere = "WHERE izin.atasan_id = '".$current_admin_id."'";
+        } else {
+            $sWhere .= " AND izin.atasan_id = '".$current_admin_id."'";
+        }
+    }
+
     $sQuery = " SELECT SQL_CALC_FOUND_ROWS ".str_replace(" , ", " ", implode(", ", $aColumns))."
         FROM $sTable
         $sWhere
@@ -134,13 +147,26 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
             }
         }
 
-        if($aRow['status'] == 'Y'){
-            $status ='<span class="text-info">Disetujui</span>';
-        }elseif($aRow['status'] == 'N'){
-            $status ='<span class="text-danger">Ditolak</span>';
-        }else{
-            $status ='<span class="text-warning">Panding</span>';
+        if ($_SESSION['level'] == 3) {
+            // Supervisor: ambil status dari supervisor_status
+            if ($aRow['supervisor_status'] == 'approved') {
+                $status = '<span class="text-info">Disetujui Supervisor</span>';
+            } elseif ($aRow['supervisor_status'] == 'rejected') {
+                $status = '<span class="text-danger">Ditolak Supervisor</span>';
+            } else {
+                $status = '<span class="text-warning">Pending Supervisor</span>';
+            }
+        } else {
+            // Admin/operator: ambil status dari status
+            if($aRow['status'] == 'Y'){
+                $status ='<span class="text-info">Disetujui</span>';
+            }elseif($aRow['status'] == 'N'){
+                $status ='<span class="text-danger">Ditolak</span>';
+            }else{
+                $status ='<span class="text-warning">Panding</span>';
+            }
         }
+
 
         if($modifikasi =='Y'){
             if($aRow['status']=='N' OR $aRow['status']=='-'){
@@ -167,6 +193,40 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
         </a>';
         }
 
+        $level = $_SESSION['level'];
+        $dropdownStatus = '';
+        if ($level == 1) {
+            $dropdownStatus = ($aRow['supervisor_status'] == 'approved')
+                ? '<div class="text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown'.$aRow['izin_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            '.$status.'
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdown'.$aRow['izin_id'].'">
+                            <a class="dropdown-item btn-status" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-status="Y">Setujui</a>
+                            <a class="dropdown-item btn-status-tolak" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-status="N">Tolak</a>
+                        </div>
+                    </div>
+                </div>'
+                : (
+                    ($aRow['supervisor_status'] == 'rejected')
+                        ? '<div class="text-danger" >Tidak disetujui</div>'
+                        : '<div class="text-info" >Belum disetuji atasan</div>'
+                );
+        } elseif ($level == 3) {
+            $dropdownStatus = '<div class="text-center">
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown-supervisor'.$aRow['cuti_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        '.$status.'
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-supervisor'.$aRow['cuti_id'].'">
+                        <a class="dropdown-item btn-supervisor-status" href="#" data-id="'.epm_encode($aRow['cuti_id']).'" data-supervisor-status="approved">Setujui Supervisor</a>
+                        <a class="dropdown-item btn-supervisor-status-tolak" href="#" data-id="'.epm_encode($aRow['cuti_id']).'" data-supervisor-status="rejected">Tolak Supervisor</a>
+                    </div>
+                </div>
+            </div>';
+        } 
+
 
         $row[] = '<div class="text-center">'.$no.'</div>';
         $row[] = $nama_lengkap;
@@ -175,17 +235,7 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
         $row[] = strip_tags($aRow['keterangan']);
         $row[] = '<div class="text-center">'.$files.'</div>';
         $row[] = tanggal_ind($aRow['date']);
-        $row[] = '<div class="text-center">
-                    <div class="dropdown">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown'.$aRow['izin_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        '.$status.'
-                    </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdown'.$aRow['izin_id'].'">
-                            <a class="dropdown-item btn-status" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-status="Y">Setujui</a>
-                            <a class="dropdown-item btn-status-tolak" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-status="N">Tolak</a>
-                        </div>
-                    </div>
-                </div>';
+        $row[] = $dropdownStatus;
         $row[] = '<div class="text-center">'.$btn_update.''.$btn_hapus.'</div>';
     }
     $output['aaData'][] = $row;   

@@ -6,11 +6,18 @@ if(!isset($_COOKIE['ADMIN_KEY']) && !isset($_COOKIE['KEY'])){
 else{
   $query_role ="SELECT lihat,modifikasi,hapus FROM role WHERE modul_id='10' AND level_id='$current_user[level]'";
   $result_role = $connection->query($query_role);
-  if($result_role->num_rows > 0){
-    $data_role = $result_role->fetch_assoc();
 
-  switch(@$_GET['op']){ 
-    default:
+  // Tambahkan pengecekan khusus untuk level 3 (atasan)
+  if($result_role->num_rows > 0 || $current_user['level'] == 3){
+    if($result_role->num_rows > 0){
+      $data_role = $result_role->fetch_assoc();
+    } else {
+      // Default: atasan (level 3) bisa lihat, tidak bisa modifikasi/hapus
+      $data_role = ['lihat'=>'Y','modifikasi'=>'N','hapus'=>'N'];
+    }
+
+    switch(@$_GET['op']){ 
+      default:
 echo'
 
 <!-- Header -->
@@ -133,4 +140,3 @@ echo'
   }
 }?>
 
-  

@@ -16,15 +16,19 @@ case 'dropdown':
     $lokasi = anti_injection($_POST['lokasi']);
   }
 
-$query_pegawai = "SELECT user_id,nama_lengkap FROM user WHERE lokasi_id='$lokasi'";
-$result_pegawai = $connection->query($query_pegawai);
-if($result_pegawai->num_rows > 0) {
-  while($data_pegawai = $result_pegawai->fetch_assoc()){
-    echo'<option value="'.$data_pegawai['user_id'].'">'.strip_tags($data_pegawai['nama_lengkap']).'</option>';
+  if(isset($_SESSION['level']) && $_SESSION['level'] == 3){
+    $query_pegawai = "SELECT user_id,nama_lengkap FROM user WHERE lokasi_id='$lokasi' AND atasan_id = '".$_SESSION['admin_id']."'";
+  }else{
+    $query_pegawai = "SELECT user_id,nama_lengkap FROM user WHERE lokasi_id='$lokasi'";
   }
-}else{
-  echo'<option value="">Data tidak ditemukan</option>';
-}
+  $result_pegawai = $connection->query($query_pegawai);
+  if($result_pegawai->num_rows > 0) {
+    while($data_pegawai = $result_pegawai->fetch_assoc()){
+      echo'<option value="'.$data_pegawai['user_id'].'">'.strip_tags($data_pegawai['nama_lengkap']).'</option>';
+    }
+  }else{
+    echo'<option value="">Data tidak ditemukan</option>';
+  }
 
 
 break;
@@ -75,7 +79,18 @@ echo'
                 
 for ($d=1;$d<=$jumlahhari;$d++) {
   $tanggal  = ''.$tahun.'-'.$bulan.'-'.$d.'';
-  $hari_libur = date('D',strtotime($tanggal));
+  $hari_libur = date('l',strtotime($tanggal)); // e.g. 'Wednesday'
+  // Konversi nama hari Inggris ke Indonesia
+  $map_hari = [
+    'Sunday'    => 'Minggu',
+    'Monday'    => 'Senin',
+    'Tuesday'   => 'Selasa',
+    'Wednesday' => 'Rabu',
+    'Thursday'  => 'Kamis',
+    'Friday'    => 'Jumat',
+    'Saturday'  => 'Sabtu'
+  ];
+  $hari_libur_id = isset($map_hari[$hari_libur]) ? strtolower($map_hari[$hari_libur]) : strtolower($hari_libur);
 
   if(isset($_POST['bulan']) OR isset($_POST['tahun']) OR isset($_POST['pegawai'])){
     $pegawai  = anti_injection($_POST['pegawai']);
@@ -83,26 +98,16 @@ for ($d=1;$d<=$jumlahhari;$d++) {
     $tahun    = anti_injection($_POST['tahun']);
     $filter = "WHERE absen.tanggal='$tanggal' AND MONTH(absen.tanggal)='$bulan' AND year(absen.tanggal)='$tahun' AND absen.user_id='$pegawai'";
 
-  /** Menentukan Hari Libur Umum */
-    $query_sabtu ="SELECT libur_hari FROM libur WHERE libur_hari='Sabtu' AND active='Y'";
-    $result_sabtu= $connection->query($query_sabtu);
-    if($result_sabtu->num_rows >0 ){
-      $sabtu = 'Sat';
-    }else{
-      $sabtu ='';
+    // Ambil hari libur dari kolom user
+    $user_libur = [];
+    $q_libur = $connection->query("SELECT libur FROM user WHERE user_id='$pegawai' LIMIT 1");
+    if($q_libur && $row_libur = $q_libur->fetch_assoc()) {
+      // Buat array lowercase dan trim
+      $user_libur = array_map('trim', explode(',', strtolower($row_libur['libur'])));
     }
 
-    $query_minggu ="SELECT libur_hari FROM libur WHERE libur_hari='Minggu' AND active='Y'";
-    $result_minggu = $connection->query($query_minggu);
-    if($result_minggu->num_rows >0 ){
-      $minggu = 'Sun';
-    }else{
-      $minggu ='';
-    }
-/** End Menentukan Hari Libur Umum */
-
-    
-    if($hari_libur == $sabtu OR $hari_libur == $minggu){
+    // Cek apakah hari ini termasuk hari libur user
+    if(in_array($hari_libur_id, $user_libur)){
       $warna      ='#ffffff';
       $background ='#FF0000';
       $status     = 'Libur';

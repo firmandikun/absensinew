@@ -65,6 +65,8 @@ echo'
                       <th>Nama</th>
                       <th>Email</th>
                       <th>Telp</th>
+                      <th>Level</th>
+                      <th>Posisi</th>
                       <th>Tanggal Daftar</th>
                       <th>Tanggal Login</th>
                       <th>Aktif</th>
@@ -168,12 +170,27 @@ case 'add':
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-6">
-                    <select class="form-control" name="level" required>
+                    <select class="form-control" name="level" id="level-select" required>
                         <option value="">-- Pilih level --</option>';
                         $query_level ="SELECT * FROM level ORDER BY level_id ASC";
                         $result_level = $connection->query($query_level);
                         while ($data_level = $result_level->fetch_assoc()){
                             echo'<option value="'.$data_level['level_id'].'">'.$data_level['level_nama'].'</option>';
+                        }
+                    echo'
+                    </select>
+            </div>
+        </div>
+
+        <div class="form-group row" id="posisi-field">
+            <label class="col-sm-2 col-form-label">Posisi</label>
+            <div class="col-sm-6">
+                    <select class="form-control" name="posisi_id">
+                        <option value="">-- Pilih posisi --</option>';
+                        $query_posisi ="SELECT * FROM posisi WHERE posisi_nama LIKE '%dekan%' ORDER BY posisi_id ASC";
+                        $result_posisi = $connection->query($query_posisi);
+                        while ($data_posisi = $result_posisi->fetch_assoc()){
+                            echo'<option value="'.$data_posisi['posisi_id'].'">'.$data_posisi['posisi_nama'].'</option>';
                         }
                     echo'
                     </select>
@@ -288,7 +305,7 @@ case 'add':
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-6">
-                    <select class="form-control" name="level" required>
+                    <select class="form-control" name="level" id="level-select-update" required>
                         <option value="">-- Pilih level --</option>';
                         $query_level ="SELECT * FROM level ORDER BY level_id ASC";
                         $result_level = $connection->query($query_level);
@@ -299,6 +316,24 @@ case 'add':
                               echo'<option value="'.$data_level['level_id'].'">'.$data_level['level_nama'].'</option>';
                             }
                            
+                        }
+                    echo'
+                    </select>
+            </div>
+        </div>
+
+        <div class="form-group row" id="posisi-field-update">
+            <label class="col-sm-2 col-form-label">Posisi</label>
+            <div class="col-sm-6">
+                    <select class="form-control" name="posisi_id">';
+                        $query_posisi ="SELECT * FROM posisi WHERE posisi_nama LIKE '%dekan%' ORDER BY posisi_id ASC";
+                        $result_posisi = $connection->query($query_posisi);
+                        while ($data_posisi = $result_posisi->fetch_assoc()){
+                            if($data_posisi['posisi_id'] == $data_user['posisi_id']){
+                              echo'<option value="'.$data_posisi['posisi_id'].'" selected>'.$data_posisi['posisi_nama'].'</option>';
+                            }else{
+                              echo'<option value="'.$data_posisi['posisi_id'].'">'.$data_posisi['posisi_nama'].'</option>';
+                            }
                         }
                     echo'
                     </select>
@@ -696,5 +731,38 @@ case 'add':
   theme_404();
 }
 }?>
+
+<script>
+$(document).ready(function() {
+    // Function to toggle position field visibility
+    function togglePosisiField(levelSelectId, posisiFieldId) {
+        var levelSelect = $('#' + levelSelectId);
+        var posisiField = $('#' + posisiFieldId);
+        
+        levelSelect.on('change', function() {
+            if ($(this).val() == '3') { // Level 3 = Atasan
+                posisiField.show();
+                posisiField.find('select[name="posisi_id"]').prop('required', true);
+            } else {
+                posisiField.hide();
+                posisiField.find('select[name="posisi_id"]').prop('required', false);
+                posisiField.find('select[name="posisi_id"]').val('');
+            }
+        });
+        
+        // Check initial value on page load
+        if (levelSelect.val() == '3') {
+            posisiField.show();
+            posisiField.find('select[name="posisi_id"]').prop('required', true);
+        }
+    }
+    
+    // Initialize for add form
+    togglePosisiField('level-select', 'posisi-field');
+    
+    // Initialize for update form
+    togglePosisiField('level-select-update', 'posisi-field-update');
+});
+</script>
 
   

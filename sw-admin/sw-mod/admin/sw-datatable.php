@@ -73,8 +73,9 @@ else{
         }
     }
 
-    $sQuery = " SELECT SQL_CALC_FOUND_ROWS ".str_replace(" , ", " ", implode(", ", $aColumns))."
-        FROM $sTable
+    $sQuery = " SELECT SQL_CALC_FOUND_ROWS admin.*, posisi.posisi_nama 
+        FROM $sTable 
+        LEFT JOIN posisi ON admin.posisi_id = posisi.posisi_id
         $sWhere
         $sOrder
         $sLimit ";
@@ -159,6 +160,15 @@ else{
                     </a>';
         }
 
+        // Get level name
+        $query_level = "SELECT level_nama FROM level WHERE level_id = '".$aRow['level']."'";
+        $result_level = mysqli_query($gaSql['link'], $query_level);
+        $level_data = mysqli_fetch_array($result_level);
+        $level_nama = $level_data['level_nama'];
+
+        // Get position name (if exists)
+        $posisi_nama = $aRow['posisi_nama'] ? $aRow['posisi_nama'] : '-';
+
         for ($i=1 ; $i<count($aColumns) ; $i++){
             if($current_user['admin_id'] == $aRow['admin_id']){
             $row[] = '<div class="text-center text-info">'.$no.'</div>';
@@ -166,6 +176,8 @@ else{
             $row[] = '<span class="text-info">'.strip_tags($aRow['fullname']).'<br>'.$status.'</span>';
             $row[] = '<span class="text-info">'.strip_tags($aRow['email']).'</span>';
             $row[] = '<span class="text-info">'.strip_tags($aRow['phone']).'</span>';
+            $row[] = '<span class="text-info">'.strip_tags($level_nama).'</span>';
+            $row[] = '<span class="text-info">'.strip_tags($posisi_nama).'</span>';
             $row[] = '<span class="text-info">'.strip_tags(tanggal_ind($aRow['registrasi_date'])).'</span>';
             $row[] = '<span class="text-info">'.strip_tags($aRow['tanggal_login']).'</span>';
             $row[] = '<div class="text-center">'.$active.'</div>';
@@ -179,6 +191,8 @@ else{
             $row[] = ''.strip_tags($aRow['fullname']).'<br>'.$status.'';
             $row[] = strip_tags($aRow['email']);
             $row[] = strip_tags($aRow['phone']);
+            $row[] = strip_tags($level_nama);
+            $row[] = strip_tags($posisi_nama);
             $row[] = strip_tags(tanggal_ind($aRow['registrasi_date']));
             $row[] = strip_tags($aRow['tanggal_login']);
             $row[] = '<div class="text-center">'.$active.'</div>';

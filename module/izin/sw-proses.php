@@ -228,6 +228,19 @@ case 'add':
   
     if (empty($error)){
 
+      // Ambil atasan_id dari tabel user
+      $query_atasan = "SELECT atasan_id FROM user WHERE user_id='$data_user[user_id]' LIMIT 1";
+      $result_atasan = $connection->query($query_atasan);
+      $atasan_id = null;
+      if($result_atasan && $result_atasan->num_rows > 0){
+        $row_atasan = $result_atasan->fetch_assoc();
+        $atasan_id = $row_atasan['atasan_id'];
+      }
+      if(empty($atasan_id)){
+        echo 'Pengajuan ditolak, Anda belum memiliki atasan.';
+        exit;
+      }
+
       $notifikasi ="INSERT INTO notifikasi (user_id,
                 nama,
                 keterangan,
@@ -268,6 +281,7 @@ case 'add':
                         files,
                         jenis,
                         keterangan,
+                        atasan_id,
                         date,
                         time,
                         status) values('$data_user[user_id]',
@@ -277,6 +291,7 @@ case 'add':
                         '$files',
                         '$jenis',
                         '$keterangan',
+                        '$atasan_id',
                         '$date',
                         '$time_sekarang',
                         '-')";

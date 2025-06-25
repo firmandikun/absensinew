@@ -86,6 +86,19 @@ else{
         }
     }
 
+    // Ambil info user login
+    $current_level = isset($_SESSION['level']) ? $_SESSION['level'] : null;
+    $current_admin_id = isset($_SESSION['admin_id']) ? $_SESSION['admin_id'] : null;
+
+    // Filter untuk atasan
+    if ($current_level == 3 && $current_admin_id) {
+        if ($sWhere == "") {
+            $sWhere = "WHERE user.atasan_id = '".$current_admin_id."'";
+        } else {
+            $sWhere .= " AND user.atasan_id = '".$current_admin_id."'";
+        }
+    }
+
     $sQuery = " SELECT SQL_CALC_FOUND_ROWS user.*, posisi.posisi_nama 
                FROM $sTable 
                LEFT JOIN posisi ON user.posisi_id = posisi.posisi_id 

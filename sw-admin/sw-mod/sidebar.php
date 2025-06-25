@@ -17,6 +17,15 @@ if($result_modul->num_rows > 0){
     $result_modul ='';
 }
 
+// Pastikan $data['data_role'] selalu array agar foreach tidak error
+if (!isset($data['data_role']) || !is_array($data['data_role'])) {
+    $data['data_role'] = [];
+}
+
+// Tambahkan sebelum menampilkan menu laporan
+$can_access_laporan = ($current_user['level'] == 3);
+$can_access_izin_cuti = ($current_user['level'] == 3);
+
     echo'
     <nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white" id="sidenav-main">
             <div class="scrollbar-inner">
@@ -136,46 +145,54 @@ if($result_modul->num_rows > 0){
                         <i class="ni ni ni-single-copy-04 text-success"></i>
                             <span class="nav-link-text">Izin & Cuti</span>
                         </a>
-
                         <div class="collapse" id="izin">
                             <ul class="nav nav-sm flex-column">';
-                              foreach ($data['data_role'] as $row) {
-                                    if ($row['modul_id'] == 16) {
-                                        echo '
-                                        <li class="nav-item">
-                                            <a href="./type-izin" class="nav-link">Type Izin Dan Cuti</a>
-                                        </li>';
-                                    }
-                                }
                             foreach ($data['data_role'] as $row) {
-                                if($row['modul_id']==8){
+                                if ($row['modul_id'] == 16) {
+                                    echo '
+                                    <li class="nav-item">
+                                        <a href="./type-izin" class="nav-link">Type Izin Dan Cuti</a>
+                                    </li>';
+                                }
+                            }
+                            // Selalu tampilkan menu Izin & Cuti jika level 3 (atasan)
+                            if($can_access_izin_cuti){
                                 echo'
                                 <li class="nav-item">
                                     <a href="./izin" class="nav-link">Izin</a>
-                                </li>';
-                                }
-                            }
-                            foreach ($data['data_role'] as $row) {
-                                if($row['modul_id']==9){
-                                echo'
+                                </li>
                                 <li class="nav-item">
                                     <a href="./cuti" class="nav-link">Cuti</a>
                                 </li>';
+                            } else {
+                                foreach ($data['data_role'] as $row) {
+                                    if($row['modul_id']==8){
+                                    echo'
+                                    <li class="nav-item">
+                                        <a href="./izin" class="nav-link">Izin</a>
+                                    </li>';
+                                    }
+                                }
+                                foreach ($data['data_role'] as $row) {
+                                    if($row['modul_id']==8){
+                                    echo'
+                                    <li class="nav-item">
+                                        <a href="./cuti" class="nav-link">Cuti</a>
+                                    </li>';
+                                    }
                                 }
                             }
                             echo'
-                            
                             </ul>
                         </div>
                     </li>';
 
                 foreach ($data['data_role'] as $row) {
-                    if($row['modul_id']==10){
+                    if($row['modul_id']==10 || $can_access_laporan){
                     echo'
                     <li class="nav-item">
                     <a class="nav-link" href="#navbar-tables" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-tables">
                         <i class="fas fa-print  text-default"></i>
-                        
                         <span class="nav-link-text">Laporan</span>
                     </a>
                     <div class="collapse" id="navbar-tables">
@@ -186,6 +203,8 @@ if($result_modul->num_rows > 0){
                         </ul>
                     </div>
                     </li>';
+                    // Jika sudah tampilkan untuk level 3, break supaya tidak dobel
+                    if($can_access_laporan) break;
                     }
                 }
 

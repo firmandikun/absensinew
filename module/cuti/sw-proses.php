@@ -227,7 +227,18 @@ case 'add':
     }
 
 
-     $atasan = NULL;
+     // Ambil atasan_id dari tabel user
+     $query_atasan = "SELECT atasan_id FROM user WHERE user_id='$data_user[user_id]' LIMIT 1";
+     $result_atasan = $connection->query($query_atasan);
+     $atasan_id = null;
+     if($result_atasan && $result_atasan->num_rows > 0){
+       $row_atasan = $result_atasan->fetch_assoc();
+       $atasan_id = $row_atasan['atasan_id'];
+     }
+     if(empty($atasan_id)){
+       echo 'Pengajuan ditolak, Anda belum memiliki atasan.';
+       exit;
+     }
 
     if (empty($_FILES['files']['name'])){
       $error[]          = 'Foto belum di unggah.!';
@@ -284,7 +295,7 @@ case 'add':
                           tanggal_selesai,
                           jumlah,
                           keterangan,
-                          atasan,
+                          atasan_id,
                           files,
                           date,
                           time,
@@ -295,7 +306,7 @@ case 'add':
                           '$tanggal_selesai',
                           '$jumlah',
                           '$keterangan',
-                          '$atasan',
+                          '$atasan_id',
                           '$files',
                           '$date',
                           '$time_sekarang',

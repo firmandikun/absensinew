@@ -67,6 +67,7 @@ function loadData(){
     var modifikasi = $('.modifikasi').html();
     var hapus = $('.hapus').html();
     var table;
+    console.log('Modifikasi: ' + modifikasi);
     $(document).ready(function() {
         //datatables
         table = $('.datatable').DataTable({
@@ -297,6 +298,44 @@ $(document).on('click', '.btn-update', function(){
     });
   });
 
+// Supervisor: Setujui
+$(document).on('click', '.btn-supervisor-status', function(){
+    var id = $(this).attr('data-id');
+    var supervisor_status = $(this).attr('data-supervisor-status');
+    $.ajax({
+        type: 'POST',
+        url: './sw-mod/izin/sw-proses.php?action=update_supervisor_status',
+        data: {id: id, supervisor_status: supervisor_status},
+        success: function(data) {
+            if (data == 'success') {
+                swal({title: 'Berhasil!', text: 'Status supervisor berhasil diupdate !', icon: 'success', timer: 2500,});
+                loadData();
+            } else {
+                swal({title: 'Gagal!', text: data, icon: 'error', timer:2500,});
+            }
+        }
+    });
+});
+
+// Supervisor: Tolak
+$(document).on('click', '.btn-supervisor-status-tolak', function(){
+    var id = $(this).attr('data-id');
+    var supervisor_status = $(this).attr('data-supervisor-status');
+    $.ajax({
+        type: 'POST',
+        url: './sw-mod/izin/sw-proses.php?action=update_supervisor_status',
+        data: {id: id, supervisor_status: supervisor_status},
+        success: function(data) {
+            if (data == 'success') {
+                swal({title: 'Berhasil!', text: 'Status supervisor berhasil diupdate ', icon: 'success', timer: 2500,});
+                loadData();
+            } else {
+                swal({title: 'Gagal!', text: data, icon: 'error', timer:2500,});
+            }
+        }
+    });
+});
+
 /** Hapus data */
 $(document).on('click', '.btn-delete', function(){ 
     var id = $(this).attr("data-id");
@@ -331,5 +370,5 @@ $(document).on('click', '.btn-delete', function(){
         return false;
     }  
 });
-}); 
+});
 

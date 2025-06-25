@@ -9,9 +9,16 @@ else{
   if($result_role->num_rows > 0){
     $data_role = $result_role->fetch_assoc();
 
-  $query_user = "SELECT user.*, posisi.posisi_nama FROM user 
-               LEFT JOIN posisi ON user.posisi_id = posisi.posisi_id 
-               ORDER BY user.nama_lengkap ASC";
+  if($current_user['level'] == 3){
+    $query_user = "SELECT user.*, posisi.posisi_nama FROM user 
+                 LEFT JOIN posisi ON user.posisi_id = posisi.posisi_id 
+                 WHERE user.atasan_id = '".$current_user['admin_id']."' 
+                 ORDER BY user.nama_lengkap ASC";
+  }else{
+    $query_user = "SELECT user.*, posisi.posisi_nama FROM user 
+                 LEFT JOIN posisi ON user.posisi_id = posisi.posisi_id 
+                 ORDER BY user.nama_lengkap ASC";
+  }
   $result_user = $connection->query($query_user);
 
 switch(@$_GET['op']){ 
@@ -161,7 +168,8 @@ echo'
               </div>
             </div>
           </div>
-        </div>';
+        </div>
+      </div>';
 
 
 /* -------------- Add -------------- */
@@ -291,6 +299,34 @@ case 'add':
                     }
                       echo'
                     </select>
+                </div>
+                 <div class="form-group">
+                  <label class="form-control-label">Atasan</label>
+                  <select class="form-control" name="atasan_id">
+                      <option value="">==Pilih Atasan==</option>';
+                      $query_atasan = "SELECT admin.admin_id, admin.fullname, posisi.posisi_nama FROM admin LEFT JOIN posisi ON admin.posisi_id = posisi.posisi_id WHERE admin.level = 3";
+                      $result_atasan = $connection->query($query_atasan);
+                      if($result_atasan->num_rows > 0){
+                        while ($data_atasan = $result_atasan->fetch_assoc()){
+                          echo '<option value="'.$data_atasan['admin_id'].'">'.strip_tags($data_atasan['fullname']).' - '.strip_tags($data_atasan['posisi_nama']).'</option>';
+                        }
+                      }
+                      echo'
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-control-label">Hari Libur</label>
+                  <select class="form-control" name="libur[]" multiple="multiple" id="libur" size="7" style="height: 140px;">
+                      <option value="Senin">Senin</option>
+                      <option value="Selasa">Selasa</option>
+                      <option value="Rabu">Rabu</option>
+                      <option value="Kamis">Kamis</option>
+                      <option value="Jumat">Jumat</option>
+                      <option value="Sabtu">Sabtu</option>
+                      <option value="Minggu">Minggu</option>
+                  </select>
+                  <small class="text-muted">Tekan Ctrl (Windows) / Cmd (Mac) untuk memilih beberapa hari</small>
                 </div>
 
 
@@ -458,6 +494,21 @@ case 'add':
                     </select>
                 </div>
 
+                <div class="form-group">
+                  <label class="form-control-label">Atasan</label>
+                  <select class="form-control" name="atasan_id">
+                      <option value="">==Pilih Atasan==</option>';
+                      $query_atasan = "SELECT admin.admin_id, admin.fullname, posisi.posisi_nama FROM admin LEFT JOIN posisi ON admin.posisi_id = posisi.posisi_id WHERE admin.level = 3";
+                      $result_atasan = $connection->query($query_atasan);
+                      if($result_atasan->num_rows > 0){
+                        while ($data_atasan = $result_atasan->fetch_assoc()){
+                          $selected = ($data_user['atasan_id'] == $data_atasan['admin_id']) ? 'selected' : '';
+                          echo '<option value="'.$data_atasan['admin_id'].'" '.$selected.'>'.strip_tags($data_atasan['fullname']).' - '.strip_tags($data_atasan['posisi_nama']).'</option>';
+                        }
+                      }
+                      echo'
+                  </select>
+                </div>
 
                 <div class="form-group">
                   <label class="form-control-label">Alamat Lengkap</label>
@@ -658,6 +709,20 @@ case 'add':
                   </div>
                 </div>
                 <hr class="my-4" />
+
+                 <div class="form-group">
+                  <label class="form-control-label">Hari Libur</label>
+                  <select class="form-control" name="libur[]" multiple="multiple" id="libur" size="7" style="height: 140px;">
+                      <option value="Senin">Senin</option>
+                      <option value="Selasa">Selasa</option>
+                      <option value="Rabu">Rabu</option>
+                      <option value="Kamis">Kamis</option>
+                      <option value="Jumat">Jumat</option>
+                      <option value="Sabtu">Sabtu</option>
+                      <option value="Minggu">Minggu</option>
+                  </select>
+                  <small class="text-muted">Tekan Ctrl (Windows) / Cmd (Mac) untuk memilih beberapa hari</small>
+                </div>
                 <!-- Description -->
                 <h6 class="heading-small text-muted mb-4">Pekerjaan</h6>
                 <div class="pl-lg-4">

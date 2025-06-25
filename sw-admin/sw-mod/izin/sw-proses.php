@@ -36,6 +36,12 @@ case 'add':
       $user_id = anti_injection($_POST['user_id']);
     }
 
+    if (empty($_POST['atasan_id'])) {
+      $error[] = 'Atasan harus dipilih';
+    } else {
+      $atasan_id = anti_injection($_POST['atasan_id']);
+    }
+
     if (empty($_POST['tanggal'])) {
       $error[] = 'Tanggal Mulai tidak boleh kosong';
     } else {
@@ -74,6 +80,7 @@ case 'add':
       
       if (empty($_FILES['files']['name'])){
           $add ="INSERT INTO izin(user_id,
+                        atasan_id,
                         tanggal_mulai,
                         tanggal_selesai,
                         files,
@@ -82,6 +89,7 @@ case 'add':
                         time,
                         date,
                         status) values('$user_id',
+                        '$atasan_id',
                         '$tanggal',
                         '$tanggal_selesai',
                         '',/** Foto */
@@ -159,18 +167,20 @@ case 'add':
             $foto            = ''.$resizeFileName.'.'.$fileExt.'';
 
             $add ="INSERT INTO izin(user_id,
+                        atasan_id,
                         tanggal_mulai,
                         tanggal_selesai,
-                        jenis,
                         files,
+                        jenis,
                         keterangan,
                         time,
                         date,
                         status) values('$user_id',
+                        '$atasan_id',
                         '$tanggal',
                         '$tanggal_selesai',
-                        '$jenis',
                         '$foto',
+                        '$jenis',
                         '$keterangan',
                         '$time',
                         '$date',
@@ -469,6 +479,22 @@ case 'setujui':
 
   
 break;
+case 'update_supervisor_status':
+    // Perlu epm_decode karena data-id di-encode
+    $id = anti_injection(epm_decode($_POST['id']));
+    $supervisor_status = $_POST['supervisor_status'];
+    $allowed = ['pending', 'approved', 'rejected'];
+    if (in_array($supervisor_status, $allowed)) {
+        $update = "UPDATE izin SET supervisor_status='$supervisor_status' WHERE izin_id='$id'";
+        if($connection->query($update) === false) {
+            echo 'error';
+        } else {
+            echo 'success';
+        }
+    } else {
+        echo 'Status supervisor tidak valid!';
+    }
+    break;
 case 'tolak':
       $id       = anti_injection(epm_decode($_POST['id']));
       $status   = htmlentities($_POST['status']);

@@ -106,10 +106,29 @@ echo'
                       <div class="form-group">
                           <label>User</label>
                           <select name="user_id" class="form-control user"  required>';
-                            $query_pegawai = "SELECT user_id,nama_lengkap FROM user ORDER BY nama_lengkap ASC";
+                            $is_atasan = (isset($_SESSION['level']) && $_SESSION['level'] == 3) || (isset($current_user['level']) && $current_user['level'] == 3);
+                            $admin_id = isset($_SESSION['admin_id']) ? $_SESSION['admin_id'] : (isset($current_user['admin_id']) ? $current_user['admin_id'] : null);
+                            if($is_atasan && $admin_id){
+                              $query_pegawai = "SELECT user_id,nama_lengkap FROM user WHERE atasan_id = '".$admin_id."' ORDER BY nama_lengkap ASC";
+                            }else{
+                              $query_pegawai = "SELECT user_id,nama_lengkap FROM user ORDER BY nama_lengkap ASC";
+                            }
                             $result_pegawai = $connection->query($query_pegawai);
                             while ($data_pegawai = $result_pegawai->fetch_assoc()) {
                               echo'<option value="'.$data_pegawai['user_id'].'">'.strip_tags($data_pegawai['nama_lengkap']).'</option>';
+                            }
+                          echo'
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label>Atasan</label>
+                          <select name="atasan_id" class="form-control" required>
+                            <option value="">==Pilih Atasan==</option>';
+                            $query_atasan = "SELECT admin_id, fullname FROM admin WHERE level = 3";
+                            $result_atasan = $connection->query($query_atasan);
+                            while ($data_atasan = $result_atasan->fetch_assoc()) {
+                              echo '<option value="'.$data_atasan['admin_id'].'">'.strip_tags($data_atasan['fullname']).'</option>';
                             }
                           echo'
                           </select>
