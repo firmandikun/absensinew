@@ -1,5 +1,5 @@
 <?PHP
-if(!isset($_COOKIE['ADMIN_KEY']) && !isset($_COOKIE['KEY'])){
+if(!isset($_COOKIE['Atasan_KEY']) && !isset($_COOKIE['KEY'])){
   header('location:./login');
   exit;
 }
@@ -20,11 +20,11 @@ echo'
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Admin</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Atasan</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="./"><i class="fas fa-home"></i> Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Admin</li>
+                  <li class="breadcrumb-item active" aria-current="page">Atasan</li>
                 </ol>
               </nav>
             </div>
@@ -41,14 +41,9 @@ echo'
           <div class="card pb-3">
             <!-- Card header -->
             <div class="card-header mb-2">
-              <h3 class="mt-2 mb-0 text-left float-left">Data Admin</h3>
+              <h3 class="mt-2 mb-0 text-left float-left">Data Atasan</h3>
               <div class="float-right">';
-              if($data_role['modifikasi']=='Y'){
-                echo'
-                <a href="./hak-akses" class="btn btn-info"><i class="fas fa-user-lock"></i> Hak Akses</a>';
-              }else{
-                echo'<button class="btn btn-primary" disabled><i class="fas fa-plus"></i> Tambah</button>';
-              }
+           
               echo'
                 <a href="'.$mod.'&op=add"  class="btn btn-primary"><i class="fas fa-plus"></i> Tambah</a>
               </div>
@@ -96,11 +91,11 @@ case 'add':
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Admin</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Atasan</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="./"><i class="fas fa-home"></i> Dashboard</a></li>
-                  <li class="breadcrumb-item"><a href="./'.$mod.'">Admin</a></li>
+                  <li class="breadcrumb-item"><a href="./'.$mod.'">Atasan</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Tambah</li>
                 </ol>
               </nav>
@@ -118,7 +113,7 @@ case 'add':
     <div class="card">
       <!-- Card header -->
       <div class="card-header">
-        <h3 class="mb-0">Tambah Data Admin</h3>
+        <h3 class="mb-0">Tambah Data Atasan</h3>
       </div>
       <!-- Card body -->
       <div class="card-body">';
@@ -227,12 +222,12 @@ case 'add':
 </div>';
 
 
-  /** Update Admin/User*/
+  /** Update Atasan/User*/
   break;
   case 'update':
   if(!empty($_GET['id'])){
     $id     =  anti_injection(epm_decode($_GET['id']));  
-    $query_user ="SELECT * FROM admin WHERE admin.admin_id='$id'";
+    $query_user ="SELECT * FROM Atasan WHERE Atasan.Atasan_id='$id'";
     $result_user = $connection->query($query_user);
 
   echo'
@@ -241,11 +236,11 @@ case 'add':
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Admin</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Atasan</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="./"><i class="fas fa-home"></i> Dashboard</a></li>
-                  <li class="breadcrumb-item"><a href="./'.$mod.'">Admin</a></li>
+                  <li class="breadcrumb-item"><a href="./'.$mod.'">Atasan</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Update</li>
                 </ol>
               </nav>
@@ -263,7 +258,7 @@ case 'add':
       <div class="card">
         <!-- Card header -->
         <div class="card-header">
-          <h3 class="mb-0">Ubah Data Admin</h3>
+          <h3 class="mb-0">Ubah Data Atasan</h3>
         </div>
         <!-- Card body -->
         <div class="card-body">';
@@ -272,7 +267,7 @@ case 'add':
           if($data_role['modifikasi']=='Y'){
           echo'
           <form class="form-update" role="form" method="post" action="#" autocomplete="off">
-          <input type="hidden" class="d-none" name="id" value="'.epm_encode($data_user['admin_id']).'" required readonly>
+          <input type="hidden" class="d-none" name="id" value="'.epm_encode($data_user['Atasan_id']).'" required readonly>
           <div class="form-group row">
           <label  class="col-sm-2 col-form-label">Nama lengkap</label>
               <div class="col-sm-6">
@@ -377,12 +372,12 @@ case 'add':
   </div>';
 }
 
-  /** Profile Admin/User*/
+  /** Profile Atasan/User*/
   break;
   case 'profile':
   if(!empty($_GET['id'])){
     $id     =  anti_injection(epm_decode($_GET['id'])); 
-    $query_user ="SELECT * FROM admin WHERE admin.admin_id='$id'";
+    $query_user ="SELECT * FROM Atasan WHERE Atasan.Atasan_id='$id'";
     $result_user = $connection->query($query_user);
 
   echo'
@@ -391,11 +386,11 @@ case 'add':
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Admin</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Atasan</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="./"><i class="fas fa-home"></i> Dashboard</a></li>
-                  <li class="breadcrumb-item"><a href="./'.$mod.'">Admin</a></li>
+                  <li class="breadcrumb-item"><a href="./'.$mod.'">Atasan</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Profil</li>
                 </ol>
               </nav>

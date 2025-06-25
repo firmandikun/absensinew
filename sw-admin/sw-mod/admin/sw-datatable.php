@@ -73,6 +73,16 @@ else{
         }
     }
 
+    // Filter: jika user yang login superadmin, jangan tampilkan admin lain yang juga superadmin
+    $superadmin_level = 1; // ganti sesuai level_id superadmin di tabel level
+    if(isset($current_user['level']) && $current_user['level'] == $superadmin_level) {
+        if($sWhere == "") {
+            $sWhere = "WHERE admin.level != '$superadmin_level'";
+        } else {
+            $sWhere .= " AND admin.level != '$superadmin_level'";
+        }
+    }
+
     $sQuery = " SELECT SQL_CALC_FOUND_ROWS admin.*, posisi.posisi_nama 
         FROM $sTable 
         LEFT JOIN posisi ON admin.posisi_id = posisi.posisi_id

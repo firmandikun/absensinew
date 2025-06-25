@@ -238,7 +238,7 @@ $can_access_izin_cuti = ($current_user['level'] == 3);
                     </li>';
                
                 foreach ($data['data_role'] as $row) {
-                    if($row['modul_id']==13){
+                    if($row['modul_id']==4){
                     echo'
                     <li class="nav-item">
                         <a class="nav-link" href="./admin">
