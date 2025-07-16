@@ -4,6 +4,15 @@ if(!isset($_COOKIE['ADMIN_KEY']) && !isset($_COOKIE['KEY'])){
   exit;
 }
 else{
+  if(isset($_COOKIE['ADMIN_KEY'])){
+    $admin_id = $_COOKIE['ADMIN_KEY'];
+    $query_admin = "SELECT * FROM admin WHERE admin_id='$admin_id' LIMIT 1";
+    $result_admin = $connection->query($query_admin);
+    if($result_admin && $result_admin->num_rows > 0){
+        $current_user = $result_admin->fetch_assoc();
+    }
+  }
+
   $query_role ="SELECT lihat,modifikasi,hapus FROM role WHERE modul_id='8' AND level_id='$current_user[level]'";
   $result_role = $connection->query($query_role);
 
@@ -87,9 +96,9 @@ echo'
                     }else{
                       echo '<th class="text-center">Status</th>';
                       echo '<th class="text-center">Status Supervisor</th>';
+                      echo ' <th class="text-center"  width="6">Aksi</th>';
                     }
                     echo'
-                    <th class="text-center"  width="6">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>

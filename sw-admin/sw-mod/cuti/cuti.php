@@ -69,7 +69,8 @@ echo'
                     <th class="text-center">Sisa Cuti</th>
                     <th>Keterangan</th>
                     <th class="text-center">Foto</th>
-                    <th>Tanggal Terbit</th>
+                    <th>Status Supervisor</th>
+                    <th>Aksi</th>
                     <th class="text-center">Status</th>
                     <th class="text-center" width="6">Aksi</th>
                   </tr>

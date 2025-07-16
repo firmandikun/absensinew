@@ -484,12 +484,26 @@ case 'update_supervisor_status':
     $id = anti_injection(epm_decode($_POST['id']));
     $supervisor_status = $_POST['supervisor_status'];
     $allowed = ['pending', 'approved', 'rejected'];
+    error_log('DEBUG update_supervisor_status | izin_id: '.$id.' | supervisor_status: '.$supervisor_status);
     if (in_array($supervisor_status, $allowed)) {
-        $update = "UPDATE izin SET supervisor_status='$supervisor_status' WHERE izin_id='$id'";
-        if($connection->query($update) === false) {
-            echo 'error';
+        // Cek value supervisor_status di database
+        $cek = $connection->query("SELECT supervisor_status FROM izin WHERE izin_id='$id'");
+        error_log('DEBUG query result num_rows: '.($cek ? $cek->num_rows : 'FALSE'));
+        if ($cek && $cek->num_rows > 0) {
+            $row = $cek->fetch_assoc();
+            error_log('DEBUG current supervisor_status: '.$row['supervisor_status']);
+            if ($row['supervisor_status'] != $supervisor_status) {
+                $update = "UPDATE izin SET supervisor_status='$supervisor_status' WHERE izin_id='$id'";
+                if($connection->query($update) === false) {
+                    echo 'error';
+                } else {
+                    echo 'success';
+                }
+            } else {
+                echo 'Tidak ada perubahan data!';
+            }
         } else {
-            echo 'success';
+            echo 'Data tidak ditemukan!';
         }
     } else {
         echo 'Status supervisor tidak valid!';

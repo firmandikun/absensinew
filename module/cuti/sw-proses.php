@@ -240,13 +240,17 @@ case 'add':
        exit;
      }
 
-    if (empty($_FILES['files']['name'])){
-      $error[]          = 'Foto belum di unggah.!';
-    } else {
+    // File upload benar-benar opsional, tanpa validasi apapun
+    if (!empty($_FILES['files']['name'])) {
       $files            = strip_tags($_FILES['files']['name']);
       $fileExt          = pathinfo($_FILES['files']['name'], PATHINFO_EXTENSION);
       $file_size        = $_FILES['files']['size'];
       $file_tmp         = $_FILES['files']['tmp_name'];
+    } else {
+      $files = '';
+      $fileExt = '';
+      $file_size = 0;
+      $file_tmp = '';
     }
 
 
@@ -277,99 +281,94 @@ case 'add':
                 if($sisa_cuti >= $jumlah){
 
                   
-                if(in_array($fileExt, $allowed_ext) === true){
-                  if ($file_size <= $max_size) {
-
-                  $sourceProperties = getimagesize($file_tmp);
-                  $uploadImageType  = $sourceProperties[2];
-                  $sourceImageWidth = $sourceProperties[0];
-                  $sourceImageHeight = $sourceProperties[1];
-                  
+                // Jika tidak upload file, langsung simpan data cuti tanpa validasi file
+                $files_name = '';
+                if ($files != '') {
                   $files_name  = ''.time().'-'.seo_title($data_user['nama_lengkap']).'';
                   $files       = ''.$files_name.'.'.$fileExt.'';
-                  
-                  $add ="INSERT INTO cuti (user_id,
-                          nama_lengkap,
-                          jenis,
-                          tanggal_mulai,
-                          tanggal_selesai,
-                          jumlah,
+                }
+                $add ="INSERT INTO cuti (user_id,
+                        nama_lengkap,
+                        jenis,
+                        tanggal_mulai,
+                        tanggal_selesai,
+                        jumlah,
+                        keterangan,
+                        atasan_id,
+                        files,
+                        date,
+                        time,
+                        status) values('$data_user[user_id]',
+                        '$data_user[nama_lengkap]',
+                        '$jenis',
+                        '$tanggal_mulai',
+                        '$tanggal_selesai',
+                        '$jumlah',
+                        '$keterangan',
+                        '$atasan_id',
+                        '$files',
+                        '$date',
+                        '$time_sekarang',
+                        '-')";
+
+                  $notifikasi ="INSERT INTO notifikasi (user_id,
+                          nama,
                           keterangan,
-                          atasan_id,
-                          files,
-                          date,
-                          time,
+                          link,
+                          tanggal,
+                          datetime,
+                          tipe,
                           status) values('$data_user[user_id]',
                           '$data_user[nama_lengkap]',
-                          '$jenis',
+                          'Baru saja mengajukan cuti',
+                          'cuti',
                           '$tanggal_mulai',
-                          '$tanggal_selesai',
-                          '$jumlah',
-                          '$keterangan',
-                          '$atasan_id',
-                          '$files',
-                          '$date',
-                          '$time_sekarang',
-                          '-')";
+                          '$timeNow',
+                          '1',
+                          'N')";
 
-                    $notifikasi ="INSERT INTO notifikasi (user_id,
-                            nama,
-                            keterangan,
-                            link,
-                            tanggal,
-                            datetime,
-                            tipe,
-                            status) values('$data_user[user_id]',
-                            '$data_user[nama_lengkap]',
-                            'Baru saja mengajukan cuti',
-                            'cuti',
-                            '$tanggal_mulai',
-                            '$timeNow',
-                            '1',
-                            'N')";
-
-                    if($connection->query($add) === false) { 
-                      echo'Sepertinya Sistem Kami sedang error!';
-                      die($connection->error.__LINE__); 
-                    } else{
-                      echo'success';
-                      $connection->query($notifikasi);
-                      switch ($uploadImageType) {
-                        case IMAGETYPE_JPEG:
-                            $resourceType = imagecreatefromjpeg($file_tmp); 
-                            $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
-                            imagejpeg($imageLayer,$uploadPath."".$files_name.'.'. $fileExt);
+                  if($connection->query($add) === false) { 
+                    echo'Sepertinya Sistem Kami sedang error!';
+                    die($connection->error.__LINE__); 
+                  } else{
+                    echo'success';
+                    $connection->query($notifikasi);
+                    // Jika ada file, upload file sesuai ekstensi
+                    if ($files != '' && $file_tmp != '') {
+                      if (in_array($fileExt, $allowed_ext) === true) {
+                        if ($file_size <= $max_size) {
+                          $sourceProperties = getimagesize($file_tmp);
+                          $uploadImageType  = $sourceProperties[2];
+                          $sourceImageWidth = $sourceProperties[0];
+                          $sourceImageHeight = $sourceProperties[1];
+                          switch ($uploadImageType) {
+                            case IMAGETYPE_JPEG:
+                                $resourceType = imagecreatefromjpeg($file_tmp); 
+                                $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+                                imagejpeg($imageLayer,$uploadPath."".$files_name.'.'. $fileExt);
+                                break;
+                            case IMAGETYPE_GIF:
+                                $resourceType = imagecreatefromgif($file_tmp); 
+                                $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+                                imagegif($imageLayer,$uploadPath."".$files_name.'.'. $fileExt);
+                                break;
+                            case IMAGETYPE_PNG:
+                                $resourceType = imagecreatefrompng($file_tmp); 
+                                $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+                                imagepng($imageLayer,$uploadPath."".$files_name.'.'. $fileExt);
+                                break;
+                            default:
+                                // Handle PDF files
+                                if(strtolower($fileExt) === 'pdf') {
+                                    move_uploaded_file($file_tmp, $uploadPath.$files_name.'.'.$fileExt);
+                                } else {
+                                    $imageProcess = 0;
+                                }
                             break;
-                
-                        case IMAGETYPE_GIF:
-                            $resourceType = imagecreatefromgif($file_tmp); 
-                            $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
-                            imagegif($imageLayer,$uploadPath."".$files_name.'.'. $fileExt);
-                            break;
-                
-                        case IMAGETYPE_PNG:
-                            $resourceType = imagecreatefrompng($file_tmp); 
-                            $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
-                            imagepng($imageLayer,$uploadPath."".$files_name.'.'. $fileExt);
-                            break;
-                
-                        default:
-                            // Handle PDF files
-                            if(strtolower($fileExt) === 'pdf') {
-                                move_uploaded_file($file_tmp, $uploadPath.$files_name.'.'.$fileExt);
-                            } else {
-                                $imageProcess = 0;
-                            }
-                        break;
+                          }
+                        }
                       }
                     }
-
-                  }else{
-                    echo 'Foto yang Anda upload terlalu besar maksimal harus 2MB!';
-                  }
-                    
-                  }else{
-                    echo 'Foto yang dibolehkan harus format JPG, JPEG dan GIF!';
                   }
 
 

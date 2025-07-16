@@ -239,13 +239,31 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
         $row[] = '<div class="text-center">'.$no.'</div>';
         $row[] = $nama_lengkap;
         $row[] = ''.tanggal_ind($aRow['tanggal_mulai']).' s/d '.tanggal_ind($aRow['tanggal_selesai']).'';
-        $row[] = strip_tags($aRow['jenis']);
+        $row[] = strip_tags($aRow['keterangan']);
         $row[] = '<div class="text-center"><span class="badge badge-warning">'.$aRow['jumlah'].'</span></div>';
         $row[] = '<div class="text-center"><span class="badge badge-info">'.$sisa_cuti.'</span></div>';
         $row[] = strip_tags($aRow['keterangan']);
         $row[] = '<div class="text-center">'.$files.'</div>';
-        $row[] = tanggal_ind($aRow['date']);
+        // Status Supervisor
+        if ($aRow['supervisor_status'] == 'approved') {
+            $row[] = '<span class="badge badge-success">Approved</span>';
+        } elseif ($aRow['supervisor_status'] == 'rejected') {
+            $row[] = '<span class="badge badge-danger">Rejected</span>';
+        } else {
+            $row[] = '<span class="badge badge-warning">Pending</span>';
+        }
+        // Aksi
         $row[] = $dropdownStatus;
+        // Status
+        if($aRow['status'] == 'Y'){
+            $row[] ='<span class="badge badge-info">Disetujui</span>';
+        }elseif($aRow['status'] == 'N'){
+            $row[] ='<span class="badge badge-danger">Ditolak</span>';
+        }else{
+            $row[] ='<span class="badge badge-warning">Panding</span>';
+        }
+        // Aksi (hapus)
+        $row[] = $btn_hapus;
     }
     $output['aaData'][] = $row;   
 }

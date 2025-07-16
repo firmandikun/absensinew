@@ -216,12 +216,12 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
         } elseif ($level == 3) {
             $dropdownStatus = '<div class="text-center">
                 <div class="dropdown">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown-supervisor'.$aRow['cuti_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown-supervisor'.$aRow['izin_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         '.$status.'
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdown-supervisor'.$aRow['cuti_id'].'">
-                        <a class="dropdown-item btn-supervisor-status" href="#" data-id="'.epm_encode($aRow['cuti_id']).'" data-supervisor-status="approved">Setujui Supervisor</a>
-                        <a class="dropdown-item btn-supervisor-status-tolak" href="#" data-id="'.epm_encode($aRow['cuti_id']).'" data-supervisor-status="rejected">Tolak Supervisor</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-supervisor'.$aRow['izin_id'].'">
+                        <a class="dropdown-item btn-supervisor-status" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-supervisor-status="approved">Setujui Supervisor</a>
+                        <a class="dropdown-item btn-supervisor-status-tolak" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-supervisor-status="rejected">Tolak Supervisor</a>
                     </div>
                 </div>
             </div>';
@@ -235,8 +235,18 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
         $row[] = strip_tags($aRow['keterangan']);
         $row[] = '<div class="text-center">'.$files.'</div>';
         $row[] = tanggal_ind($aRow['date']);
-        $row[] = $dropdownStatus;
-        $row[] = '<div class="text-center">'.$btn_update.''.$btn_hapus.'</div>';
+        $row[] = $dropdownStatus; // dropdown supervisor untuk aksi
+        // Kolom status supervisor hanya satu, tampilkan dengan warna
+        if ($aRow['supervisor_status'] == 'approved') {
+            $row[] = '<div class="text-center"><span class="text-info">Disetujui Supervisor</span></div>';
+        } elseif ($aRow['supervisor_status'] == 'rejected') {
+            $row[] = '<div class="text-center"><span class="text-danger">Ditolak Supervisor</span></div>';
+        } else {
+            $row[] = '<div class="text-center"><span class="text-warning">Pending Supervisor</span></div>';
+        }
+
+   
+        $row[] = '<div class="text-center">'.$btn_update.$btn_hapus.'</div>';
     }
     $output['aaData'][] = $row;   
 }

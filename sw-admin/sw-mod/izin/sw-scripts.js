@@ -339,36 +339,41 @@ $(document).on('click', '.btn-supervisor-status-tolak', function(){
 /** Hapus data */
 $(document).on('click', '.btn-delete', function(){ 
     var id = $(this).attr("data-id");
-      swal({
+    console.log('Klik hapus, id:', id);
+    swal({
         text: "Anda yakin ingin menghapus data ini?",
         icon: "warning",
-          buttons: {
+        buttons: {
             cancel: true,
             confirm: true,
-          },
+        },
         value: "yes",
-      })
-
-      .then((value) => {
+    })
+    .then((value) => {
         if(value) {
             loading();
+            console.log('Mulai AJAX hapus, id:', id);
             $.ajax({  
-                 url:'./sw-mod/izin/sw-proses.php?action=delete',
-                 type:'POST',    
-                 data:{id:id},  
+                url:'./sw-mod/izin/sw-proses.php?action=delete',
+                type:'POST',    
+                data:{id:id},  
                 success:function(data){ 
+                    console.log('Respon hapus:', data);
                     if (data == 'success') {
                         swal({title: 'Berhasil!', text: 'Data berhasil dihapus.!', icon: 'success', timer: 2500,});
                         loadData();
                     } else {
                         swal({title: 'Gagal!', text: data, icon: 'error', timer:2500,});
-                        
                     }
-                 }  
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX error:', status, error, xhr.responseText);
+                    swal({title: 'Gagal!', text: 'AJAX error: '+error, icon: 'error', timer:2500,});
+                }
             });  
-       } else{  
-        return false;
-    }  
-});
+        } else{  
+            return false;
+        }  
+    });
 });
 

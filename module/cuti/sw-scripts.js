@@ -1,4 +1,7 @@
+// Dinamis required dan tampil file upload sesuai jenis cuti (sinkron cuti.php)
+
 'use strict';
+
 
 function loading(){
     $('.btn-save').prop("disabled", true);
@@ -147,11 +150,7 @@ $(".form-add").validate({
         field: {
             required: true
         },
-
-        files: {
-            required:true,
-        },
-        
+       
         keterangan: {
             required: true,
             minlength: 6,
@@ -314,3 +313,29 @@ $(document).on('shown.bs.modal', '.modal-add', function() {
 $(document).on('change', '.tanggal-selesai', hitungHariCuti);
 $(document).on('input', '.tanggal-selesai', hitungHariCuti);
 
+
+
+
+function handleJenisCutiChange() {
+    const jenisCuti = $('.jenis').val();
+    const uploadSection = $('.form-upload-bukti');
+    
+    if (jenisCuti === 'tahunan') {
+        uploadSection.hide();
+        // Reset file upload jika ada
+        removeUpload();
+    } else {
+        uploadSection.show();
+    }
+}
+
+// Panggil fungsi saat halaman dimuat dan ketika dropdown berubah
+$(document).ready(function() {
+    // Panggil saat pertama kali load
+    handleJenisCutiChange();
+
+    console.log('Jenis Cuti:', $('.jenis').val());
+    
+    // Tambahkan event listener untuk perubahan dropdown
+    $('.jenis').change(handleJenisCutiChange);
+});

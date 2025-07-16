@@ -83,6 +83,7 @@ echo'
                     <h6 class="subtitle mb-2">Cuti</h6>
                 </div>
                 <div class="load-cuty postList"></div>
+                <div id="supervisor-status-info"></div>
             </div>
     </div>
 
@@ -102,7 +103,7 @@ echo'
 
                         <div class="form-group">
                             <label class="form-control-label">Jenis Cuti</label>
-                            <select class="form-control jenis" name="jenis" required>
+                            <select class="form-control jenis"  id="jenis" name="jenis" required onchange="handleJenisCutiChange()"> >
                                 <option value="">...</option>';
                                 $query_status_izin="SELECT * FROM lain_lain WHERE tipe='cuti'";
                                 $result_status_izin= $connection->query($query_status_izin);
@@ -148,11 +149,11 @@ echo'
                             <label class="form-control-label">Alasan Cuti</label>
                             <textarea class="form-control keterangan" name="keterangan" rows="2" required></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group form-upload-bukti">
                           <label>Upload bukti/surat cuti</label>
                           <div class="file-upload">
                               <div class="image-upload-wrap">
-                                <input class="file-upload-input fileInput files" type="file" name="files" onchange="readURL(this);" accept="image/*,application/pdf" required>
+                                <input class="file-upload-input files" type="file" name="files" id="files" onchange="readURL(this);" accept="image/*,application/pdf">
                                   <div class="drag-text">
                                     <i class="lni lni-cloud-upload"></i>
                                     <h3>Drag and drop files here</h3>
@@ -197,37 +198,45 @@ echo'
     </div>
 </main>';}
 ?>
-<script>
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var file = input.files[0];
-        $('.image-upload-wrap').hide();
-        $('.file-upload-content').show();
 
-        // Clear both previews first
-        $('.image-preview, .pdf-preview').hide();
-        
-        if (file.type === 'application/pdf') {
-            // Show PDF preview
-            $('.pdf-preview').show();
-            $('.pdf-name').html('<strong>File: ' + file.name + '</strong>');
-        } else {
-            // Show image preview
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('.image-preview').show();
-                $('.file-upload-image').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(file);
-        }
+<script>
+
+function handleJenisCutiChange() {
+    var jenisCuti = $('#jenis').val();
+    var uploadSection = $('.form-upload-bukti');
+    if (jenisCuti && jenisCuti.toLowerCase() === 'tahunan') {
+        uploadSection.hide();
+        // Reset file upload jika ada
+        if (typeof removeUpload === 'function') removeUpload();
+    } else {
+        uploadSection.show();
     }
 }
 
-function removeUpload() {
-    $('.file-upload-input').val('');
-    $('.file-upload-content').hide();
-    $('.image-upload-wrap').show();
-    $('.pdf-preview').hide();
-    $('.image-preview').hide();
-}
+$(document).ready(function() {
+    // Panggil saat pertama kali load
+    handleJenisCutiChange();
+    // Tambahkan event listener untuk perubahan dropdown
+    $('#jenis').on('change', handleJenisCutiChange);
+
+    // Render supervisor status jika data berupa JSON datatable
+    $(document).ajaxSuccess(function(event, xhr, settings) {
+        try {
+            var json = JSON.parse(xhr.responseText);
+            if (json.aaData) {
+                var html = '<table class="table table-bordered"><thead><tr><th>No</th><th>Nama</th><th>Periode</th><th>Jenis</th><th>Jumlah</th><th>Sisa</th><th>Alasan</th><th>Bukti</th><th>Tanggal</th><th>Status Supervisor</th></tr></thead><tbody>';
+                for (var i = 0; i < json.aaData.length; i++) {
+                    var row = json.aaData[i];
+                    html += '<tr>';
+                    for (var j = 0; j < row.length; j++) {
+                        html += '<td>' + row[j] + '</td>';
+                    }
+                    html += '</tr>';
+                }
+                html += '</tbody></table>';
+                $('#supervisor-status-info').html(html);
+            }
+        } catch(e) { /* abaikan jika bukan json datatable */ }
+    });
+});
 </script>
