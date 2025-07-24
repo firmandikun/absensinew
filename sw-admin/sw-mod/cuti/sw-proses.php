@@ -646,42 +646,41 @@ case 'update_supervisor_status':
 
 /* --------------- Delete ------------*/
     break;
-    case 'delete':
-        $id       = anti_injection(epm_decode($_POST['id']));
-        $query_cuti ="SELECT user_id,tanggal_mulai,tanggal_selesai,status FROM cuti WHERE cuti_id='$id'";
-        $result_cuti = $connection->query($query_cuti);
-        if($result_cuti->num_rows > 0){
-          $data_cuti = $result_cuti->fetch_assoc();
+ case 'delete':
+    $id = anti_injection(epm_decode($_POST['id']));
+    $query_cuti = "SELECT user_id, tanggal_mulai, tanggal_selesai, status FROM cuti WHERE cuti_id='$id'";
+    $result_cuti = $connection->query($query_cuti);
 
-          if($data_cuti['status'] =='N' OR $data_cuti['status'] =='-'){
-              $start = date('Y-m-d',strtotime('-1 days',strtotime($data_cuti['tanggal_mulai'])));
-              $finish = date('Y-m-d',strtotime('-1 days',strtotime($data_cuti['tanggal_selesai'])));
+    if ($result_cuti->num_rows > 0) {
+        $data_cuti = $result_cuti->fetch_assoc();
 
-            /* Script Delete Data ------------*/
-              $deleted = "DELETE FROM cuti WHERE cuti_id='$id'";
-              if($connection->query($deleted) === true) {
-                echo'success';
-                if($data_cuti['status'] =='Y'){
-                  while (strtotime($start) <= strtotime($finish)) {
-                    $start = date('Y-m-d',strtotime('+1 days',strtotime($start)));
-                    $deleted_absen = "DELETE FROM absen WHERE tanggal='$start' AND user_id='$data_cuti[user_id]'";
+        $start = $data_cuti['tanggal_mulai'];
+        $finish = $data_cuti['tanggal_selesai'];
+
+        // Script Delete Data
+        $deleted = "DELETE FROM cuti WHERE cuti_id='$id'";
+        if ($connection->query($deleted) === true) {
+
+            // Jika status sudah disetujui, hapus juga data absen terkait
+            if ($data_cuti['status'] == 'Y') {
+                while (strtotime($start) <= strtotime($finish)) {
+                    $deleted_absen = "DELETE FROM absen WHERE tanggal='$start' AND user_id='{$data_cuti['user_id']}'";
                     $connection->query($deleted_absen);
-                  }
+                    $start = date('Y-m-d', strtotime('+1 day', strtotime($start)));
                 }
+            }
 
-              } else { 
-                //tidak berhasil
-                echo'Data tidak berhasil dihapus.!';
-                die($connection->error.__LINE__);
-              }
-          }else{
-            echo'Data Cuti Telah disetujui dan tidak dapat dihapus!';
-          }
+            echo 'success';
 
-        }else{
-          echo 'Data tidak ditemukan!';
+        } else {
+            echo 'Data tidak berhasil dihapus!';
+            die($connection->error . __LINE__);
         }
-   
 
-break;
+    } else {
+        echo 'Data tidak ditemukan!';
+    }
+
+    break;
+
 }}

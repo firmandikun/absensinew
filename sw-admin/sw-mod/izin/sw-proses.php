@@ -568,44 +568,46 @@ case 'tolak':
 
 /* --------------- Delete ------------*/
     break;
-    case 'delete':
-        $id       = anti_injection(epm_decode($_POST['id']));
-        $query_izin ="SELECT user_id,tanggal_mulai,tanggal_selesai,files,status FROM izin WHERE izin_id='$id'";
-        $result_izin = $connection->query($query_izin);
-        if($result_izin->num_rows > 0){
-          $data_izin = $result_izin->fetch_assoc();
+ case 'delete':
+    $id = anti_injection(epm_decode($_POST['id']));
+    $query_izin = "SELECT user_id, tanggal_mulai, tanggal_selesai, files, status FROM izin WHERE izin_id='$id'";
+    $result_izin = $connection->query($query_izin);
 
-          if($data_izin['status'] =='N' OR $data_izin['status'] =='-'){
-              $start = date('Y-m-d',strtotime('-1 days',strtotime($data_izin['tanggal_mulai'])));
-              $finish = date('Y-m-d',strtotime('-1 days',strtotime($data_izin['tanggal_selesai'])));
+    if ($result_izin->num_rows > 0) {
+        $data_izin = $result_izin->fetch_assoc();
 
-              if(file_exists("../../sw-content/izin/".$data_izin['files']."")){
-                  unlink ('../../../sw-content/izin/'.$data_izin['files'].''); 
-              }
-            /* Script Delete Data ------------*/
-              $deleted = "DELETE FROM izin WHERE izin_id='$id'";
-              if($connection->query($deleted) === true) {
-                echo'success';
-                if($data_izin['status'] =='Y'){
-                  while (strtotime($start) <= strtotime($finish)) {
-                    $start = date('Y-m-d',strtotime('+1 days',strtotime($start)));
-                    $deleted_absen = "DELETE FROM absen WHERE tanggal='$start' AND user_id='$data_izin[user_id]'";
-                    $connection->query($deleted_absen);
-                  }
-                }
-
-              } else { 
-                //tidak berhasil
-                echo'Data tidak berhasil dihapus.!';
-                die($connection->error.__LINE__);
-              }
-          }else{
-            echo'Data Izin Telah disetujui dan tidak dapat dihapus!';
-          }
-
-        }else{
-          echo 'Data tidak ditemukan!';
+        // Hapus file jika ada
+        $file_path = "../../../sw-content/izin/" . $data_izin['files'];
+        if (!empty($data_izin['files']) && file_exists($file_path)) {
+            unlink($file_path);
         }
+
+        // Hapus data izin
+        $deleted = "DELETE FROM izin WHERE izin_id='$id'";
+        if ($connection->query($deleted) === true) {
+            // Jika sebelumnya status 'Y', hapus juga absensi
+            if ($data_izin['status'] == 'Y') {
+                $start = $data_izin['tanggal_mulai'];
+                $finish = $data_izin['tanggal_selesai'];
+
+                while (strtotime($start) <= strtotime($finish)) {
+                    $deleted_absen = "DELETE FROM absen WHERE tanggal='$start' AND user_id='{$data_izin['user_id']}'";
+                    $connection->query($deleted_absen);
+                    $start = date('Y-m-d', strtotime('+1 day', strtotime($start)));
+                }
+            }
+
+            echo 'success';
+        } else {
+            echo 'Data tidak berhasil dihapus.!';
+            die($connection->error . __LINE__);
+        }
+
+    } else {
+        echo 'Data tidak ditemukan!';
+    }
+    break;
+
    
 
 break;

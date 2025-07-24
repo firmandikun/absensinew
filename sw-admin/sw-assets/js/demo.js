@@ -115,11 +115,11 @@
     });
 }(jQuery));
 
-$(document).on('click', '.btn-error', function(){ 
-    swal({title: 'Failed!', text: 'Sorry Anda tidak memiliki hak akses.!', icon: 'error', timer: 1500,});
-});
+// $(document).on('click', '.btn-error', function(){ 
+//     swal({title: 'Failed!', text: ' akses.!', icon: 'error', timer: 1500,});
+// });
 
-$('[data-toggle="tooltip"]').tooltip();
+// $('[data-toggle="tooltip"]').tooltip();
 
 var path = window.location.href; 
 // because the 'href' property of the DOM element is the absolute path

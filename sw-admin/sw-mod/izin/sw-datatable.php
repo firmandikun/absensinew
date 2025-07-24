@@ -188,7 +188,7 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
          <i class="fas fa-trash"></i>
      </a>';
         }else{
-        $btn_hapus ='<a href="javascript:void(0)" class="table-action table-action-delete btn-tooltip btn-error" data-toggle="tooltip" data-placement="right" title="Hapus">
+        $btn_hapus ='<a href="javascript:void(0)" class="table-action table-action-delete btn-tooltip btn-delete" data-toggle="tooltip" data-placement="right" title="Hapus" data-id="'.epm_encode($aRow['izin_id']).'">
          <i class="fas fa-trash"></i>
         </a>';
         }
