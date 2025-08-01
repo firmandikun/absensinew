@@ -208,12 +208,12 @@ while ($aRow = mysqli_fetch_array($rResult)){$no++;
             $dropdownStatus = ($aRow['supervisor_status'] == 'approved')
                 ? '<div class="text-center">
                     <div class="dropdown">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown'.$aRow['izin_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdown'.$aRow['cuti_id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             '.$status.'
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdown'.$aRow['izin_id'].'">
-                            <a class="dropdown-item btn-status" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-status="Y">Setujui</a>
-                            <a class="dropdown-item btn-status-tolak" href="#" data-id="'.epm_encode($aRow['izin_id']).'" data-status="N">Tolak</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown'.$aRow['cuti_id'].'">
+                            <a class="dropdown-item btn-status" href="#" data-id="'.epm_encode($aRow['cuti_id']).'" data-status="Y">Setujui</a>
+                            <a class="dropdown-item btn-status-tolak" href="#" data-id="'.epm_encode($aRow['cuti_id']).'" data-status="N">Tolak</a>
                         </div>
                     </div>
                 </div>'
